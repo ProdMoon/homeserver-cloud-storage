@@ -1,0 +1,27 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.uploadLabel {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font: inherit;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), #ee9342);
+  color: #fdf7f1;
+  transition: transform 140ms ease;
+}
+
+.uploadLabel:hover {
+  transform: translateY(-1px);
+}
+
+.toolbar input {
+  display: none;
+}
+

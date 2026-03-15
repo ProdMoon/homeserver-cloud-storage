@@ -1,4 +1,7 @@
-import { getSession, listFiles, listTrash } from "./api";
+import { listFiles } from "./shared/api/files";
+import { getSession } from "./shared/api/session";
+import { listTrash } from "./shared/api/trash";
+
 
 const fetchMock = vi.fn();
 

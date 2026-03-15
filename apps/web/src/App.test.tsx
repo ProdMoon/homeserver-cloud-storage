@@ -1,11 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { App } from "./App";
+import { App } from "./app/App";
+import { resetAppStore } from "./app/store/useAppStore";
 
 const fetchMock = vi.fn();
 const scrollToMock = vi.fn();
 
 beforeEach(() => {
+  resetAppStore();
   fetchMock.mockReset();
   scrollToMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);

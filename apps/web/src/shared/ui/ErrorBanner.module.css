@@ -1,0 +1,7 @@
+.banner {
+  border-radius: 14px;
+  background: rgba(162, 57, 47, 0.12);
+  color: var(--danger);
+  padding: 12px 14px;
+}
+

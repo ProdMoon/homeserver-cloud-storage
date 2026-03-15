@@ -1,5 +1,9 @@
 export type PreviewKind = "image" | "video" | "pdf" | "text" | "audio" | null;
 
+export type ViewMode = "files" | "trash";
+export type SortField = "name" | "size" | "modifiedAt";
+export type SortDirection = "asc" | "desc";
+
 export interface SessionState {
   authenticated: boolean;
   username?: string;
@@ -37,5 +41,18 @@ export interface TrashItem {
 
 export interface TrashListing {
   items: TrashItem[];
+}
+
+export interface UploadItem {
+  id: string;
+  names: string[];
+  progress: number;
+  status: "uploading" | "done" | "error";
+  error?: string;
+}
+
+export interface RefreshOptions {
+  preserveScroll?: boolean;
+  quiet?: boolean;
 }
 
