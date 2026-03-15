@@ -47,13 +47,13 @@ export function PreviewModal() {
           {file.previewKind === 'image' ? (
             <img
               alt={file.name}
-              className="min-h-[280px] w-full rounded-[22px] bg-black/5 object-contain md:min-h-[520px]"
+              className="min-h-70 w-full rounded-[22px] bg-black/5 object-contain md:min-h-130"
               src={previewUrl(file.path, 'inline')}
             />
           ) : null}
           {file.previewKind === 'video' ? (
             <video
-              className="min-h-[280px] w-full rounded-[22px] bg-black/5 md:min-h-[520px]"
+              className="min-h-70 w-full rounded-[22px] bg-black/5 md:min-h-130"
               controls
               src={previewUrl(file.path, 'inline')}
             />
@@ -63,7 +63,7 @@ export function PreviewModal() {
           ) : null}
           {file.previewKind === 'pdf' ? (
             <iframe
-              className="min-h-[280px] w-full rounded-[22px] border-0 bg-black/5 md:min-h-[520px]"
+              className="min-h-70 w-full rounded-[22px] border-0 bg-black/5 md:min-h-130"
               src={previewUrl(file.path, 'inline')}
               title={file.name}
             />
@@ -73,7 +73,7 @@ export function PreviewModal() {
               {textPreviewLoading ? <p>Loading text preview...</p> : null}
               {textPreviewError ? <ErrorBanner message={textPreviewError} /> : null}
               {!textPreviewLoading && !textPreviewError ? (
-                <pre className="m-0 whitespace-pre-wrap break-words font-mono">
+                <pre className="m-0 whitespace-pre-wrap wrap-break-word font-mono">
                   {textPreviewContent}
                 </pre>
               ) : null}

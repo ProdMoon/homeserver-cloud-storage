@@ -20,10 +20,10 @@ export function LoginScreen() {
 
   return (
     <main className="grid min-h-screen place-items-center p-8">
-      <section className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] bg-[rgba(9,25,41,0.88)] p-9 text-sidebar-text shadow-cloud">
+      <section className="relative w-full max-w-130 overflow-hidden rounded-[28px] bg-[rgba(9,25,41,0.88)] p-9 text-sidebar-text shadow-cloud">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-[12%] -bottom-[36%] h-[220px] w-[220px] rotate-[12deg] rounded-full bg-[radial-gradient(circle,rgba(234,152,71,0.7),transparent_70%)]"
+          className="pointer-events-none absolute -right-[12%] -bottom-[36%] h-55 w-55 rotate-12 rounded-full bg-[radial-gradient(circle,rgba(234,152,71,0.7),transparent_70%)]"
         />
         <div className="relative z-10">
           <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
@@ -36,7 +36,7 @@ export function LoginScreen() {
             Browse, preview, upload, and recover files from your Raspberry Pi with one admin account
             and a clean remote explorer.
           </p>
-          <form className="grid gap-2.5" onSubmit={handleSubmit}>
+          <form className="mt-4 grid gap-2.5" onSubmit={handleSubmit}>
             <label className="text-[0.95rem]" htmlFor={usernameId}>
               Username
             </label>
@@ -57,7 +57,7 @@ export function LoginScreen() {
               onChange={(event) => setPassword(event.target.value)}
             />
             {error ? <ErrorBanner message={error} /> : null}
-            <Button disabled={busy} type="submit" variant="primary">
+            <Button className="mt-4" disabled={busy} type="submit" variant="primary">
               {busy ? 'Signing in...' : 'Enter Drive'}
             </Button>
           </form>

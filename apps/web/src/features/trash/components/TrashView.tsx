@@ -42,11 +42,11 @@ export function TrashView() {
           Deleted items
         </h1>
       </header>
-      <div className="overflow-auto rounded-[24px] border border-line bg-surface-panel">
+      <div className="overflow-auto rounded-3xl border border-line bg-surface-panel">
         <div className="min-w-full w-max">
           <div
             className={cn(
-              'hidden items-center gap-4 bg-surface-panel-strong px-[18px] py-3.5 font-mono text-[0.78rem] uppercase tracking-[0.06em] text-ink-muted xl:grid',
+              'hidden items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] uppercase tracking-[0.06em] text-ink-muted xl:grid',
               trashColumns
             )}
           >
@@ -67,7 +67,7 @@ export function TrashView() {
           {trashItems.map((item) => (
             <div
               className={cn(
-                'grid grid-cols-1 gap-2.5 border-t border-line px-[18px] py-3.5 xl:items-center xl:gap-4',
+                'grid grid-cols-1 gap-2.5 border-t border-line px-4.5 py-3.5 xl:items-center xl:gap-4',
                 trashColumns
               )}
               key={item.id}
@@ -81,7 +81,7 @@ export function TrashView() {
                   <div className="text-sm text-ink-muted">{formatBytes(item.sizeBytes)}</div>
                 </div>
               </div>
-              <span className="break-words font-mono text-[0.82rem] text-ink-muted">
+              <span className="wrap-break-word font-mono text-[0.82rem] text-ink-muted">
                 {item.originalPath}
               </span>
               <span className="text-sm text-ink-muted">{formatDate(item.deletedAt)}</span>

@@ -11,11 +11,11 @@ export function FileList({ items }: { items: FileItem[] }) {
   const listing = useAppStore(selectListing);
 
   return (
-    <div className="overflow-auto rounded-[24px] border border-line bg-surface-panel">
+    <div className="overflow-auto rounded-3xl border border-line bg-surface-panel">
       <div className="min-w-full w-max">
         <div
           className={cn(
-            'hidden items-center gap-4 bg-surface-panel-strong px-[18px] py-3.5 font-mono text-[0.78rem] uppercase tracking-[0.06em] text-ink-muted xl:grid',
+            'hidden items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] uppercase tracking-[0.06em] text-ink-muted xl:grid',
             explorerListColumns
           )}
         >
