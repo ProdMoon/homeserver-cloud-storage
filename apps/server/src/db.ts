@@ -1,8 +1,8 @@
-import { DatabaseSync } from "node:sqlite";
-import { mkdir } from "node:fs/promises";
-import { createCsrfToken, createSessionId, hashPassword, verifyPassword } from "./auth.js";
-import { HttpError } from "./http-error.js";
-import type { TrashRecordInput } from "./storage.js";
+import { DatabaseSync } from 'node:sqlite';
+import { mkdir } from 'node:fs/promises';
+import { createCsrfToken, createSessionId, hashPassword, verifyPassword } from './auth.js';
+import { HttpError } from './http-error.js';
+import type { TrashRecordInput } from './storage.js';
 
 export interface SessionRecord {
   id: string;
@@ -34,7 +34,7 @@ interface TrashRow {
   original_path: string;
   storage_name: string;
   item_name: string;
-  item_kind: "file" | "directory";
+  item_kind: 'file' | 'directory';
   deleted_at: string;
   size_bytes: number;
   mime_type: string | null;
@@ -91,7 +91,7 @@ export class AppDatabase {
 
   async ensureAdmin(username: string, password?: string): Promise<void> {
     const existing = this.db
-      .prepare("SELECT username, password_hash FROM admin_user WHERE id = 1")
+      .prepare('SELECT username, password_hash FROM admin_user WHERE id = 1')
       .get() as AdminUserRow | undefined;
 
     if (existing) {
@@ -99,18 +99,20 @@ export class AppDatabase {
     }
 
     if (!password) {
-      throw new HttpError(500, "ADMIN_PASSWORD must be set when bootstrapping the admin account.");
+      throw new HttpError(500, 'ADMIN_PASSWORD must be set when bootstrapping the admin account.');
     }
 
     const passwordHash = await hashPassword(password);
     this.db
-      .prepare("INSERT INTO admin_user (id, username, password_hash, created_at) VALUES (1, ?, ?, ?)")
+      .prepare(
+        'INSERT INTO admin_user (id, username, password_hash, created_at) VALUES (1, ?, ?, ?)'
+      )
       .run(username, passwordHash, new Date().toISOString());
   }
 
   async verifyAdminCredentials(username: string, password: string): Promise<boolean> {
     const adminUser = this.db
-      .prepare("SELECT username, password_hash FROM admin_user WHERE username = ?")
+      .prepare('SELECT username, password_hash FROM admin_user WHERE username = ?')
       .get(username) as AdminUserRow | undefined;
 
     if (!adminUser) {
@@ -128,21 +130,30 @@ export class AppDatabase {
       csrfToken: createCsrfToken(),
       createdAt: now.toISOString(),
       lastSeenAt: now.toISOString(),
-      expiresAt: new Date(now.getTime() + this.sessionTtlMs).toISOString()
+      expiresAt: new Date(now.getTime() + this.sessionTtlMs).toISOString(),
     };
 
     this.db
       .prepare(
-        "INSERT INTO sessions (id, username, csrf_token, created_at, last_seen_at, expires_at) VALUES (?, ?, ?, ?, ?, ?)"
+        'INSERT INTO sessions (id, username, csrf_token, created_at, last_seen_at, expires_at) VALUES (?, ?, ?, ?, ?, ?)'
       )
-      .run(session.id, session.username, session.csrfToken, session.createdAt, session.lastSeenAt, session.expiresAt);
+      .run(
+        session.id,
+        session.username,
+        session.csrfToken,
+        session.createdAt,
+        session.lastSeenAt,
+        session.expiresAt
+      );
 
     return session;
   }
 
   getSession(sessionId: string): SessionRecord | null {
     const row = this.db
-      .prepare("SELECT id, username, csrf_token, created_at, last_seen_at, expires_at FROM sessions WHERE id = ?")
+      .prepare(
+        'SELECT id, username, csrf_token, created_at, last_seen_at, expires_at FROM sessions WHERE id = ?'
+      )
       .get(sessionId) as SessionRow | undefined;
 
     if (!row) {
@@ -160,23 +171,23 @@ export class AppDatabase {
       csrfToken: row.csrf_token,
       createdAt: row.created_at,
       lastSeenAt: row.last_seen_at,
-      expiresAt: row.expires_at
+      expiresAt: row.expires_at,
     };
   }
 
   touchSession(sessionId: string): void {
     const now = new Date();
     this.db
-      .prepare("UPDATE sessions SET last_seen_at = ?, expires_at = ? WHERE id = ?")
+      .prepare('UPDATE sessions SET last_seen_at = ?, expires_at = ? WHERE id = ?')
       .run(now.toISOString(), new Date(now.getTime() + this.sessionTtlMs).toISOString(), sessionId);
   }
 
   deleteSession(sessionId: string): void {
-    this.db.prepare("DELETE FROM sessions WHERE id = ?").run(sessionId);
+    this.db.prepare('DELETE FROM sessions WHERE id = ?').run(sessionId);
   }
 
   deleteExpiredSessions(): void {
-    this.db.prepare("DELETE FROM sessions WHERE expires_at <= ?").run(new Date().toISOString());
+    this.db.prepare('DELETE FROM sessions WHERE expires_at <= ?').run(new Date().toISOString());
   }
 
   insertTrashRecord(record: TrashRecordInput): void {
@@ -215,7 +226,7 @@ export class AppDatabase {
       itemKind: row.item_kind,
       deletedAt: row.deleted_at,
       sizeBytes: row.size_bytes,
-      mimeType: row.mime_type
+      mimeType: row.mime_type,
     }));
   }
 
@@ -239,11 +250,11 @@ export class AppDatabase {
       itemKind: row.item_kind,
       deletedAt: row.deleted_at,
       sizeBytes: row.size_bytes,
-      mimeType: row.mime_type
+      mimeType: row.mime_type,
     };
   }
 
   deleteTrashRecord(id: string): void {
-    this.db.prepare("DELETE FROM trash_records WHERE id = ?").run(id);
+    this.db.prepare('DELETE FROM trash_records WHERE id = ?').run(id);
   }
 }

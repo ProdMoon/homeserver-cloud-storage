@@ -14,9 +14,8 @@ services:
       TRUST_PROXY: ${TRUST_PROXY:-true}
       POLL_INTERVAL_MS: ${POLL_INTERVAL_MS:-10000}
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - '${PORT:-3000}:${PORT:-3000}'
     volumes:
       - ./storage/root:${ROOT_DIR:-/storage/root}
       - ./storage/data:${DATA_DIR:-/storage/data}
     restart: unless-stopped
-

@@ -1,10 +1,10 @@
-import { deleteTrash, listTrash, restoreTrash } from "../../shared/api/trash";
-import { captureWindowScroll, restoreWindowScroll } from "../../shared/lib/scroll";
-import type { StoreSlice, TrashSlice } from "./types";
+import { deleteTrash, listTrash, restoreTrash } from '../../shared/api/trash';
+import { captureWindowScroll, restoreWindowScroll } from '../../shared/lib/scroll';
+import type { StoreSlice, TrashSlice } from './types';
 
 function requireCsrfToken(token: string | undefined): string {
   if (!token) {
-    throw new Error("You need to sign in again.");
+    throw new Error('You need to sign in again.');
   }
 
   return token;
@@ -24,12 +24,12 @@ export const createTrashSlice: StoreSlice<TrashSlice> = (set, get) => ({
       const nextTrash = await listTrash();
       set({
         trashItems: nextTrash.items,
-        error: null
+        error: null,
       });
       restoreWindowScroll(scrollPosition);
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to load trash."
+        error: error instanceof Error ? error.message : 'Failed to load trash.',
       });
     } finally {
       if (!options.quiet) {
@@ -45,7 +45,7 @@ export const createTrashSlice: StoreSlice<TrashSlice> = (set, get) => ({
       await refreshTrash({ preserveScroll: true });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to restore item."
+        error: error instanceof Error ? error.message : 'Failed to restore item.',
       });
     }
   },
@@ -57,9 +57,8 @@ export const createTrashSlice: StoreSlice<TrashSlice> = (set, get) => ({
       await refreshTrash({ preserveScroll: true });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to delete item."
+        error: error instanceof Error ? error.message : 'Failed to delete item.',
       });
     }
-  }
+  },
 });
-

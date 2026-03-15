@@ -7,4 +7,3 @@
   },
   "exclude": ["src/**/*.test.ts"]
 }
-

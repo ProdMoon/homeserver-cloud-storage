@@ -1,9 +1,8 @@
-import type { ShellSlice, StoreSlice } from "./types";
+import type { ShellSlice, StoreSlice } from './types';
 
 export const createShellSlice: StoreSlice<ShellSlice> = (set) => ({
-  activeView: "files",
+  activeView: 'files',
   error: null,
   setActiveView: (activeView) => set({ activeView }),
-  setError: (error) => set({ error })
+  setError: (error) => set({ error }),
 });
-

@@ -1,4 +1,4 @@
-import type { StateCreator } from "zustand/vanilla";
+import type { StateCreator } from 'zustand/vanilla';
 import type {
   DirectoryListing,
   FileItem,
@@ -8,8 +8,8 @@ import type {
   SortField,
   TrashItem,
   UploadItem,
-  ViewMode
-} from "../../shared/types";
+  ViewMode,
+} from '../../shared/types';
 
 export interface ShellSlice {
   activeView: ViewMode;
@@ -68,6 +68,10 @@ export interface UploadsSlice {
   enqueueUpload: (files: File[] | FileList) => Promise<void>;
 }
 
-export type AppStore = ShellSlice & SessionSlice & ExplorerSlice & TrashSlice & PreviewSlice & UploadsSlice;
+export type AppStore = ShellSlice &
+  SessionSlice &
+  ExplorerSlice &
+  TrashSlice &
+  PreviewSlice &
+  UploadsSlice;
 export type StoreSlice<T> = StateCreator<AppStore, [], [], T>;
-

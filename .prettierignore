@@ -1,0 +1,9 @@
+node_modules
+.pnpm-store
+dist
+.vite
+coverage
+.tmp
+apps/server/data
+apps/server/root
+storage

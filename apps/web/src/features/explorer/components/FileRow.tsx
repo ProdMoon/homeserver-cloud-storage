@@ -1,9 +1,9 @@
-import type { KeyboardEvent } from "react";
-import { previewUrl, downloadUrl } from "../../../shared/api/files";
-import { cn } from "../../../shared/lib/cn";
-import { formatBytes, formatDate, previewLabel } from "../../../shared/lib/formatters";
-import type { FileItem } from "../../../shared/types";
-import { Button, LinkButton } from "../../../shared/ui/Button";
+import type { KeyboardEvent } from 'react';
+import { previewUrl, downloadUrl } from '../../../shared/api/files';
+import { cn } from '../../../shared/lib/cn';
+import { formatBytes, formatDate, previewLabel } from '../../../shared/lib/formatters';
+import type { FileItem } from '../../../shared/types';
+import { Button, LinkButton } from '../../../shared/ui/Button';
 import {
   selectDeleteItem,
   selectMoveItem,
@@ -11,10 +11,10 @@ import {
   selectRenameItem,
   selectSelectedPath,
   selectSetCurrentPath,
-  selectSetSelectedPath
-} from "../../../app/store/selectors";
-import { useAppStore } from "../../../app/store/useAppStore";
-import { explorerListColumns } from "./layout";
+  selectSetSelectedPath,
+} from '../../../app/store/selectors';
+import { useAppStore } from '../../../app/store/useAppStore';
+import { explorerListColumns } from './layout';
 
 export function FileRow({ item }: { item: FileItem }) {
   const selectedPath = useAppStore(selectSelectedPath);
@@ -26,7 +26,7 @@ export function FileRow({ item }: { item: FileItem }) {
   const deleteItem = useAppStore(selectDeleteItem);
 
   async function handleRename() {
-    const name = window.prompt("Rename item", item.name);
+    const name = window.prompt('Rename item', item.name);
 
     if (!name || name === item.name) {
       return;
@@ -36,7 +36,7 @@ export function FileRow({ item }: { item: FileItem }) {
   }
 
   async function handleMove() {
-    const destinationPath = window.prompt("Move to folder path", "");
+    const destinationPath = window.prompt('Move to folder path', '');
 
     if (destinationPath == null) {
       return;
@@ -54,7 +54,7 @@ export function FileRow({ item }: { item: FileItem }) {
   }
 
   function activateItem() {
-    if (item.type === "directory") {
+    if (item.type === 'directory') {
       setCurrentPath(item.path);
       return;
     }
@@ -63,7 +63,7 @@ export function FileRow({ item }: { item: FileItem }) {
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       activateItem();
     }
@@ -72,9 +72,9 @@ export function FileRow({ item }: { item: FileItem }) {
   return (
     <div
       className={cn(
-        "grid grid-cols-1 gap-2.5 border-t border-line px-[18px] py-3.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/40 xl:items-center xl:gap-4",
+        'grid grid-cols-1 gap-2.5 border-t border-line px-[18px] py-3.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/40 xl:items-center xl:gap-4',
         explorerListColumns,
-        selectedPath === item.path && "bg-accent-wash"
+        selectedPath === item.path && 'bg-accent-wash'
       )}
       onClick={() => setSelectedPath(item.path)}
       onDoubleClick={activateItem}
@@ -85,20 +85,28 @@ export function FileRow({ item }: { item: FileItem }) {
       <div className="flex min-w-0 items-center gap-3.5">
         <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-[18px] bg-[linear-gradient(135deg,rgba(219,109,48,0.24),rgba(19,35,55,0.14))] font-mono text-xs">
           {item.thumbnailAvailable ? (
-            <img alt="" className="h-full w-full object-cover" src={previewUrl(item.path, "thumb")} />
+            <img
+              alt=""
+              className="h-full w-full object-cover"
+              src={previewUrl(item.path, 'thumb')}
+            />
           ) : (
-            <span>{item.type === "directory" ? "DIR" : previewLabel(item.previewKind)}</span>
+            <span>{item.type === 'directory' ? 'DIR' : previewLabel(item.previewKind)}</span>
           )}
         </div>
         <div className="min-w-0">
           <strong className="block truncate">{item.name}</strong>
-          <div className="text-sm text-ink-muted">{item.type === "directory" ? "Folder" : item.mimeType ?? "Binary file"}</div>
+          <div className="text-sm text-ink-muted">
+            {item.type === 'directory' ? 'Folder' : (item.mimeType ?? 'Binary file')}
+          </div>
         </div>
       </div>
       <span className="text-sm text-ink-muted">{formatDate(item.modifiedAt)}</span>
-      <span className="text-sm text-ink-muted">{item.type === "directory" ? "—" : formatBytes(item.size)}</span>
+      <span className="text-sm text-ink-muted">
+        {item.type === 'directory' ? '—' : formatBytes(item.size)}
+      </span>
       <div className="flex min-w-0 flex-wrap items-center gap-3 xl:flex-nowrap xl:justify-between">
-        {item.type === "directory" ? (
+        {item.type === 'directory' ? (
           <Button onClick={() => setCurrentPath(item.path)} type="button">
             Open
           </Button>
@@ -107,7 +115,7 @@ export function FileRow({ item }: { item: FileItem }) {
             Preview
           </Button>
         )}
-        {item.type === "file" ? (
+        {item.type === 'file' ? (
           <LinkButton href={downloadUrl(item.path)}>Download</LinkButton>
         ) : null}
         <Button onClick={() => void handleRename()} type="button">

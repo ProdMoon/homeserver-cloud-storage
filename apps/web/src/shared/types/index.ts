@@ -1,8 +1,8 @@
-export type PreviewKind = "image" | "video" | "pdf" | "text" | "audio" | null;
+export type PreviewKind = 'image' | 'video' | 'pdf' | 'text' | 'audio' | null;
 
-export type ViewMode = "files" | "trash";
-export type SortField = "name" | "size" | "modifiedAt";
-export type SortDirection = "asc" | "desc";
+export type ViewMode = 'files' | 'trash';
+export type SortField = 'name' | 'size' | 'modifiedAt';
+export type SortDirection = 'asc' | 'desc';
 
 export interface SessionState {
   authenticated: boolean;
@@ -14,7 +14,7 @@ export interface SessionState {
 export interface FileItem {
   name: string;
   path: string;
-  type: "file" | "directory";
+  type: 'file' | 'directory';
   size: number;
   modifiedAt: string;
   mimeType: string | null;
@@ -33,7 +33,7 @@ export interface TrashItem {
   originalPath: string;
   storageName: string;
   itemName: string;
-  itemKind: "file" | "directory";
+  itemKind: 'file' | 'directory';
   deletedAt: string;
   sizeBytes: number;
   mimeType: string | null;
@@ -47,7 +47,7 @@ export interface UploadItem {
   id: string;
   names: string[];
   progress: number;
-  status: "uploading" | "done" | "error";
+  status: 'uploading' | 'done' | 'error';
   error?: string;
 }
 
@@ -55,4 +55,3 @@ export interface RefreshOptions {
   preserveScroll?: boolean;
   quiet?: boolean;
 }
-

@@ -6,8 +6,11 @@
   "scripts": {
     "build": "pnpm --filter @pi-home-drive/web build && pnpm --filter @pi-home-drive/server build",
     "dev": "pnpm --parallel --filter @pi-home-drive/server --filter @pi-home-drive/web dev",
+    "format": "prettier --write .",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
   }
 }
-

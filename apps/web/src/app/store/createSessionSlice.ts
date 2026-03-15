@@ -1,5 +1,9 @@
-import { getSession as getSessionRequest, login as loginRequest, logout as logoutRequest } from "../../shared/api/session";
-import type { SessionSlice, StoreSlice } from "./types";
+import {
+  getSession as getSessionRequest,
+  login as loginRequest,
+  logout as logoutRequest,
+} from '../../shared/api/session';
+import type { SessionSlice, StoreSlice } from './types';
 
 const DEFAULT_POLL_INTERVAL_MS = 10_000;
 
@@ -14,7 +18,7 @@ export const createSessionSlice: StoreSlice<SessionSlice> = (set, get) => ({
       set({ session, error: null });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to load session."
+        error: error instanceof Error ? error.message : 'Failed to load session.',
       });
     } finally {
       set({ authBusy: false });
@@ -27,13 +31,13 @@ export const createSessionSlice: StoreSlice<SessionSlice> = (set, get) => ({
       const session = await loginRequest(username, password);
       set({
         session,
-        activeView: "files",
-        currentPath: "",
-        error: null
+        activeView: 'files',
+        currentPath: '',
+        error: null,
       });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Login failed."
+        error: error instanceof Error ? error.message : 'Login failed.',
       });
     } finally {
       set({ authBusy: false });
@@ -50,21 +54,20 @@ export const createSessionSlice: StoreSlice<SessionSlice> = (set, get) => ({
       set({
         session: {
           authenticated: false,
-          pollIntervalMs: session?.pollIntervalMs ?? DEFAULT_POLL_INTERVAL_MS
+          pollIntervalMs: session?.pollIntervalMs ?? DEFAULT_POLL_INTERVAL_MS,
         },
-        activeView: "files",
+        activeView: 'files',
         error: null,
-        currentPath: "",
+        currentPath: '',
         listing: null,
         selectedPath: null,
         trashItems: [],
         previewing: null,
-        textPreviewContent: "",
+        textPreviewContent: '',
         textPreviewError: null,
         textPreviewLoading: false,
-        uploads: []
+        uploads: [],
       });
     }
-  }
+  },
 });
-

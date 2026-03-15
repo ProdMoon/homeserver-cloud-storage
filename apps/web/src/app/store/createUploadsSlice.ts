@@ -1,9 +1,9 @@
-import { uploadFiles } from "../../shared/api/files";
-import type { StoreSlice, UploadsSlice } from "./types";
+import { uploadFiles } from '../../shared/api/files';
+import type { StoreSlice, UploadsSlice } from './types';
 
 function requireCsrfToken(token: string | undefined): string {
   if (!token) {
-    throw new Error("You need to sign in again.");
+    throw new Error('You need to sign in again.');
   }
 
   return token;
@@ -26,24 +26,29 @@ export const createUploadsSlice: StoreSlice<UploadsSlice> = (set, get) => ({
         id: uploadId,
         names: uploadFilesList.map((file) => file.name),
         progress: 0,
-        status: "uploading"
-      })
+        status: 'uploading',
+      }),
     }));
 
     try {
-      await uploadFiles(currentPath, uploadFilesList, requireCsrfToken(session?.csrfToken), (progress) => {
-        set((state) => ({
-          uploads: state.uploads.map((item) =>
-            item.id === uploadId
-              ? {
-                  ...item,
-                  progress,
-                  status: "uploading"
-                }
-              : item
-          )
-        }));
-      });
+      await uploadFiles(
+        currentPath,
+        uploadFilesList,
+        requireCsrfToken(session?.csrfToken),
+        (progress) => {
+          set((state) => ({
+            uploads: state.uploads.map((item) =>
+              item.id === uploadId
+                ? {
+                    ...item,
+                    progress,
+                    status: 'uploading',
+                  }
+                : item
+            ),
+          }));
+        }
+      );
 
       set((state) => ({
         uploads: state.uploads.map((item) =>
@@ -51,11 +56,11 @@ export const createUploadsSlice: StoreSlice<UploadsSlice> = (set, get) => ({
             ? {
                 ...item,
                 progress: 1,
-                status: "done"
+                status: 'done',
               }
             : item
         ),
-        error: null
+        error: null,
       }));
       await refreshFiles(currentPath, { preserveScroll: true });
     } catch (error) {
@@ -64,14 +69,13 @@ export const createUploadsSlice: StoreSlice<UploadsSlice> = (set, get) => ({
           item.id === uploadId
             ? {
                 ...item,
-                status: "error",
-                error: error instanceof Error ? error.message : "Upload failed."
+                status: 'error',
+                error: error instanceof Error ? error.message : 'Upload failed.',
               }
             : item
         ),
-        error: error instanceof Error ? error.message : "Upload failed."
+        error: error instanceof Error ? error.message : 'Upload failed.',
       }));
     }
-  }
+  },
 });
-

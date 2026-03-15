@@ -1,8 +1,8 @@
-@import "tailwindcss" source("../../");
+@import 'tailwindcss' source('../../');
 
 @theme static {
-  --font-sans: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", "Menlo", monospace;
+  --font-sans: 'Avenir Next', 'Segoe UI', 'Trebuchet MS', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', 'Menlo', monospace;
   --color-ink: #112033;
   --color-ink-muted: rgba(17, 32, 51, 0.68);
   --color-ink-subtle: rgba(17, 32, 51, 0.72);

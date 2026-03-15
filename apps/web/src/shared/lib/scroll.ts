@@ -10,7 +10,7 @@ export function captureWindowScroll(enabled: boolean | undefined): ScrollPositio
 
   return {
     left: window.scrollX,
-    top: window.scrollY
+    top: window.scrollY,
   };
 }
 
@@ -23,4 +23,3 @@ export function restoreWindowScroll(position: ScrollPosition | null) {
     window.scrollTo(position.left, position.top);
   });
 }
-

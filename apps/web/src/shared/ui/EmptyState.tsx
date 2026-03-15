@@ -1,7 +1,7 @@
 export function EmptyState({
   title,
   description,
-  children
+  children,
 }: {
   title?: string;
   description: string;

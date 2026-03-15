@@ -1,28 +1,34 @@
-import { createFolder as createFolderRequest, deleteFile, listFiles, moveFile, renameFile } from "../../shared/api/files";
-import { captureWindowScroll, restoreWindowScroll } from "../../shared/lib/scroll";
-import type { ExplorerSlice, StoreSlice } from "./types";
+import {
+  createFolder as createFolderRequest,
+  deleteFile,
+  listFiles,
+  moveFile,
+  renameFile,
+} from '../../shared/api/files';
+import { captureWindowScroll, restoreWindowScroll } from '../../shared/lib/scroll';
+import type { ExplorerSlice, StoreSlice } from './types';
 
 function requireCsrfToken(token: string | undefined): string {
   if (!token) {
-    throw new Error("You need to sign in again.");
+    throw new Error('You need to sign in again.');
   }
 
   return token;
 }
 
 export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
-  currentPath: "",
+  currentPath: '',
   listing: null,
   selectedPath: null,
   filesLoading: false,
-  sortField: "name",
-  sortDirection: "asc",
+  sortField: 'name',
+  sortDirection: 'asc',
   setCurrentPath: (currentPath) => set({ currentPath }),
   setSelectedPath: (selectedPath) => set({ selectedPath }),
   setSortField: (sortField) => set({ sortField }),
   toggleSortDirection: () =>
     set((state) => ({
-      sortDirection: state.sortDirection === "asc" ? "desc" : "asc"
+      sortDirection: state.sortDirection === 'asc' ? 'desc' : 'asc',
     })),
   refreshFiles: async (path = get().currentPath, options = {}) => {
     const scrollPosition = captureWindowScroll(options.preserveScroll);
@@ -40,12 +46,12 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
           state.selectedPath && nextListing.items.some((item) => item.path === state.selectedPath)
             ? state.selectedPath
             : null,
-        error: null
+        error: null,
       }));
       restoreWindowScroll(scrollPosition);
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to load files."
+        error: error instanceof Error ? error.message : 'Failed to load files.',
       });
     } finally {
       if (!options.quiet) {
@@ -61,7 +67,7 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
       await refreshFiles(currentPath, { preserveScroll: true });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to create folder."
+        error: error instanceof Error ? error.message : 'Failed to create folder.',
       });
     }
   },
@@ -73,7 +79,7 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
       await refreshFiles(currentPath, { preserveScroll: true });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to rename item."
+        error: error instanceof Error ? error.message : 'Failed to rename item.',
       });
     }
   },
@@ -85,7 +91,7 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
       await refreshFiles(currentPath, { preserveScroll: true });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to move item."
+        error: error instanceof Error ? error.message : 'Failed to move item.',
       });
     }
   },
@@ -98,18 +104,17 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
         previewing?.path === item.path
           ? {
               previewing: null,
-              textPreviewContent: "",
+              textPreviewContent: '',
               textPreviewError: null,
-              textPreviewLoading: false
+              textPreviewLoading: false,
             }
           : {}
       );
       await refreshFiles(currentPath, { preserveScroll: true });
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "Failed to move item to trash."
+        error: error instanceof Error ? error.message : 'Failed to move item to trash.',
       });
     }
-  }
+  },
 });
-

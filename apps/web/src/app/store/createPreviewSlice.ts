@@ -1,9 +1,9 @@
-import { fetchTextPreview } from "../../shared/api/files";
-import type { PreviewSlice, StoreSlice } from "./types";
+import { fetchTextPreview } from '../../shared/api/files';
+import type { PreviewSlice, StoreSlice } from './types';
 
 export const createPreviewSlice: StoreSlice<PreviewSlice> = (set, get) => ({
   previewing: null,
-  textPreviewContent: "",
+  textPreviewContent: '',
   textPreviewError: null,
   textPreviewLoading: false,
   previewRequestId: 0,
@@ -12,23 +12,23 @@ export const createPreviewSlice: StoreSlice<PreviewSlice> = (set, get) => ({
 
     set({
       previewing,
-      textPreviewContent: "",
+      textPreviewContent: '',
       textPreviewError: null,
-      textPreviewLoading: previewing.previewKind === "text",
-      previewRequestId: nextRequestId
+      textPreviewLoading: previewing.previewKind === 'text',
+      previewRequestId: nextRequestId,
     });
 
-    if (previewing.previewKind === "text") {
+    if (previewing.previewKind === 'text') {
       void get().loadTextPreview(previewing.path);
     }
   },
   closePreview: () =>
     set((state) => ({
       previewing: null,
-      textPreviewContent: "",
+      textPreviewContent: '',
       textPreviewError: null,
       textPreviewLoading: false,
-      previewRequestId: state.previewRequestId + 1
+      previewRequestId: state.previewRequestId + 1,
     })),
   loadTextPreview: async (path) => {
     const requestId = get().previewRequestId;
@@ -43,7 +43,7 @@ export const createPreviewSlice: StoreSlice<PreviewSlice> = (set, get) => ({
       set({
         textPreviewContent,
         textPreviewError: null,
-        textPreviewLoading: false
+        textPreviewLoading: false,
       });
     } catch (error) {
       if (get().previewRequestId !== requestId || get().previewing?.path !== path) {
@@ -51,10 +51,9 @@ export const createPreviewSlice: StoreSlice<PreviewSlice> = (set, get) => ({
       }
 
       set({
-        textPreviewError: error instanceof Error ? error.message : "Failed to load preview.",
-        textPreviewLoading: false
+        textPreviewError: error instanceof Error ? error.message : 'Failed to load preview.',
+        textPreviewLoading: false,
       });
     }
-  }
+  },
 });
-

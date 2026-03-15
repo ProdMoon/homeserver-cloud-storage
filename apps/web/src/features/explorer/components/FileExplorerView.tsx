@@ -4,14 +4,14 @@ import {
   selectSetSortField,
   selectSortDirection,
   selectSortField,
-  selectToggleSortDirection
-} from "../../../app/store/selectors";
-import { useAppStore } from "../../../app/store/useAppStore";
-import { Button } from "../../../shared/ui/Button";
-import { sortItems } from "../lib/sort";
-import { BreadcrumbNav } from "./BreadcrumbNav";
-import { ExplorerToolbar } from "./ExplorerToolbar";
-import { FileList } from "./FileList";
+  selectToggleSortDirection,
+} from '../../../app/store/selectors';
+import { useAppStore } from '../../../app/store/useAppStore';
+import { Button } from '../../../shared/ui/Button';
+import { sortItems } from '../lib/sort';
+import { BreadcrumbNav } from './BreadcrumbNav';
+import { ExplorerToolbar } from './ExplorerToolbar';
+import { FileList } from './FileList';
 
 export function FileExplorerView() {
   const currentPath = useAppStore(selectCurrentPath);
@@ -26,8 +26,12 @@ export function FileExplorerView() {
     <div className="flex flex-col gap-5">
       <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">Explorer</div>
-          <h1 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">File browser</h1>
+          <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
+            Explorer
+          </div>
+          <h1 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">
+            File browser
+          </h1>
         </div>
         <ExplorerToolbar />
       </header>
@@ -45,7 +49,7 @@ export function FileExplorerView() {
             <option value="modifiedAt">Modified</option>
           </select>
           <Button onClick={() => toggleSortDirection()} type="button">
-            {sortDirection === "asc" ? "Ascending" : "Descending"}
+            {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
           </Button>
         </div>
       </div>

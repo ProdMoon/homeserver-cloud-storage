@@ -1,4 +1,4 @@
-import type { AppStore } from "./types";
+import type { AppStore } from './types';
 
 export const selectActiveView = (state: AppStore) => state.activeView;
 export const selectAuthBusy = (state: AppStore) => state.authBusy;
@@ -36,4 +36,3 @@ export const selectToggleSortDirection = (state: AppStore) => state.toggleSortDi
 export const selectTrashItems = (state: AppStore) => state.trashItems;
 export const selectTrashLoading = (state: AppStore) => state.trashLoading;
 export const selectUploads = (state: AppStore) => state.uploads;
-
