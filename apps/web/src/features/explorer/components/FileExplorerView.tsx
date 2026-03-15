@@ -12,7 +12,6 @@ import { sortItems } from "../lib/sort";
 import { BreadcrumbNav } from "./BreadcrumbNav";
 import { ExplorerToolbar } from "./ExplorerToolbar";
 import { FileList } from "./FileList";
-import styles from "./FileExplorerView.module.css";
 
 export function FileExplorerView() {
   const currentPath = useAppStore(selectCurrentPath);
@@ -24,18 +23,23 @@ export function FileExplorerView() {
   const items = listing ? sortItems(listing.items, sortField, sortDirection) : [];
 
   return (
-    <div className={styles.view}>
-      <header className={styles.header}>
+    <div className="flex flex-col gap-5">
+      <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <div className={styles.eyebrow}>Explorer</div>
-          <h1>File browser</h1>
+          <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">Explorer</div>
+          <h1 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">File browser</h1>
         </div>
         <ExplorerToolbar />
       </header>
-      <div className={styles.breadcrumbRow}>
+      <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-between">
         <BreadcrumbNav pathValue={listing?.path ?? currentPath} />
-        <div className={styles.sortControls}>
-          <select aria-label="Sort field" onChange={(event) => setSortField(event.target.value as typeof sortField)} value={sortField}>
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            aria-label="Sort field"
+            className="cursor-pointer rounded-[14px] border border-line bg-white/40 px-4 py-3 text-sm outline-none transition focus:border-accent/50 focus:bg-white/80"
+            onChange={(event) => setSortField(event.target.value as typeof sortField)}
+            value={sortField}
+          >
             <option value="name">Name</option>
             <option value="size">Size</option>
             <option value="modifiedAt">Modified</option>
@@ -49,4 +53,3 @@ export function FileExplorerView() {
     </div>
   );
 }
-

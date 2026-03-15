@@ -1,5 +1,6 @@
 import type { KeyboardEvent } from "react";
 import { previewUrl, downloadUrl } from "../../../shared/api/files";
+import { cn } from "../../../shared/lib/cn";
 import { formatBytes, formatDate, previewLabel } from "../../../shared/lib/formatters";
 import type { FileItem } from "../../../shared/types";
 import { Button, LinkButton } from "../../../shared/ui/Button";
@@ -13,7 +14,7 @@ import {
   selectSetSelectedPath
 } from "../../../app/store/selectors";
 import { useAppStore } from "../../../app/store/useAppStore";
-import styles from "./FileRow.module.css";
+import { explorerListColumns } from "./layout";
 
 export function FileRow({ item }: { item: FileItem }) {
   const selectedPath = useAppStore(selectSelectedPath);
@@ -70,29 +71,33 @@ export function FileRow({ item }: { item: FileItem }) {
 
   return (
     <div
-      className={selectedPath === item.path ? `${styles.row} ${styles.selected}` : styles.row}
+      className={cn(
+        "grid grid-cols-1 gap-2.5 border-t border-line px-[18px] py-3.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/40 xl:items-center xl:gap-4",
+        explorerListColumns,
+        selectedPath === item.path && "bg-accent-wash"
+      )}
       onClick={() => setSelectedPath(item.path)}
       onDoubleClick={activateItem}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
-      <div className={styles.main}>
-        <div className={styles.thumb}>
+      <div className="flex min-w-0 items-center gap-3.5">
+        <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-[18px] bg-[linear-gradient(135deg,rgba(219,109,48,0.24),rgba(19,35,55,0.14))] font-mono text-xs">
           {item.thumbnailAvailable ? (
-            <img alt="" src={previewUrl(item.path, "thumb")} />
+            <img alt="" className="h-full w-full object-cover" src={previewUrl(item.path, "thumb")} />
           ) : (
             <span>{item.type === "directory" ? "DIR" : previewLabel(item.previewKind)}</span>
           )}
         </div>
-        <div>
-          <strong>{item.name}</strong>
-          <div className={styles.hint}>{item.type === "directory" ? "Folder" : item.mimeType ?? "Binary file"}</div>
+        <div className="min-w-0">
+          <strong className="block truncate">{item.name}</strong>
+          <div className="text-sm text-ink-muted">{item.type === "directory" ? "Folder" : item.mimeType ?? "Binary file"}</div>
         </div>
       </div>
-      <span>{formatDate(item.modifiedAt)}</span>
-      <span>{item.type === "directory" ? "—" : formatBytes(item.size)}</span>
-      <div className={styles.actions}>
+      <span className="text-sm text-ink-muted">{formatDate(item.modifiedAt)}</span>
+      <span className="text-sm text-ink-muted">{item.type === "directory" ? "—" : formatBytes(item.size)}</span>
+      <div className="flex min-w-0 flex-wrap items-center gap-3 xl:flex-nowrap xl:justify-between">
         {item.type === "directory" ? (
           <Button onClick={() => setCurrentPath(item.path)} type="button">
             Open
@@ -118,4 +123,3 @@ export function FileRow({ item }: { item: FileItem }) {
     </div>
   );
 }
-

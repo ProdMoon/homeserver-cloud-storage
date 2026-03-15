@@ -1,7 +1,6 @@
 import { selectCreateFolder, selectCurrentPath, selectEnqueueUpload } from "../../../app/store/selectors";
 import { useAppStore } from "../../../app/store/useAppStore";
-import { Button } from "../../../shared/ui/Button";
-import styles from "./ExplorerToolbar.module.css";
+import { Button, buttonVariants } from "../../../shared/ui/Button";
 
 export function ExplorerToolbar() {
   const currentPath = useAppStore(selectCurrentPath);
@@ -19,14 +18,15 @@ export function ExplorerToolbar() {
   }
 
   return (
-    <div className={styles.toolbar}>
+    <div className="flex flex-wrap items-center justify-between gap-3">
       <Button onClick={() => void handleCreateFolder()} type="button">
         New folder
       </Button>
-      <label className={styles.uploadLabel} htmlFor="upload-input">
+      <label className={buttonVariants({ variant: "primary" })} htmlFor="upload-input">
         Upload files
       </label>
       <input
+        className="hidden"
         id="upload-input"
         key={currentPath}
         multiple
@@ -39,4 +39,3 @@ export function ExplorerToolbar() {
     </div>
   );
 }
-

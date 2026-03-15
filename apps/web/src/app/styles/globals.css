@@ -1,34 +1,64 @@
+@import "tailwindcss" source("../../");
+
+@theme static {
+  --font-sans: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", "Menlo", monospace;
+  --color-ink: #112033;
+  --color-ink-muted: rgba(17, 32, 51, 0.68);
+  --color-ink-subtle: rgba(17, 32, 51, 0.72);
+  --color-line: rgba(17, 32, 51, 0.12);
+  --color-surface-card: rgba(255, 252, 247, 0.78);
+  --color-surface-panel: rgba(247, 242, 236, 0.82);
+  --color-surface-panel-strong: rgba(255, 255, 255, 0.48);
+  --color-surface-sidebar: rgba(17, 32, 51, 0.92);
+  --color-surface-sidebar-soft: rgba(255, 255, 255, 0.08);
+  --color-sidebar-text: #f6efe8;
+  --color-sidebar-copy: rgba(246, 239, 232, 0.72);
+  --color-accent: #db6d30;
+  --color-accent-soft: #ee9342;
+  --color-accent-wash: rgba(219, 109, 48, 0.08);
+  --color-danger: #a2392f;
+  --color-danger-wash: rgba(162, 57, 47, 0.12);
+  --color-danger-soft: #ffb7af;
+  --color-overlay: rgba(7, 16, 26, 0.56);
+  --color-preview-surface: rgba(255, 252, 247, 0.96);
+  --color-code-surface: rgba(17, 32, 51, 0.96);
+  --color-code-text: #efe4d4;
+  --color-track: rgba(255, 255, 255, 0.12);
+  --shadow-cloud: 0 32px 80px rgba(36, 46, 64, 0.16);
+}
+
 :root {
   color-scheme: light;
-  font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(239, 180, 86, 0.24), transparent 38%),
-    radial-gradient(circle at bottom right, rgba(34, 107, 149, 0.24), transparent 32%),
-    linear-gradient(180deg, #f7f0e6 0%, #efe4d4 100%);
-  color: #112033;
-  line-height: 1.5;
-  font-weight: 500;
-  --bg-card: rgba(255, 252, 247, 0.78);
-  --bg-panel: rgba(247, 242, 236, 0.82);
-  --accent: #db6d30;
-  --danger: #a2392f;
-  --line: rgba(17, 32, 51, 0.12);
-  --shadow: 0 32px 80px rgba(36, 46, 64, 0.16);
-  --mono: "IBM Plex Mono", "SFMono-Regular", "Menlo", monospace;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(239, 180, 86, 0.24), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(34, 107, 149, 0.24), transparent 32%),
+    linear-gradient(180deg, #f7f0e6 0%, #efe4d4 100%);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -36,8 +66,3 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-#root {
-  min-height: 100vh;
-}
-
