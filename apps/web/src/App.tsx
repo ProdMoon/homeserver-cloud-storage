@@ -4,7 +4,7 @@ import {
   useEffectEvent,
   useId,
   useState,
-  type FormEvent
+  type SubmitEvent
 } from "react";
 import {
   createFolder,
@@ -154,7 +154,7 @@ function LoginScreen({
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     await onSubmit(username, password);
   }
