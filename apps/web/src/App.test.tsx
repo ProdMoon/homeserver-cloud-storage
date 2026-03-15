@@ -1,10 +1,36 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from './app/App';
-import { resetAppStore } from './app/store/useAppStore';
+import { appStore, resetAppStore } from './app/store/useAppStore';
 
 const fetchMock = vi.fn();
 const scrollToMock = vi.fn();
+
+function jsonResponse(body: unknown) {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+function fileListingResponse() {
+  return jsonResponse({
+    path: '',
+    parentPath: null,
+    items: [
+      {
+        name: 'Photos',
+        path: 'Photos',
+        type: 'directory',
+        size: 0,
+        modifiedAt: new Date('2026-01-01T10:00:00.000Z').toISOString(),
+        mimeType: null,
+        previewKind: null,
+        thumbnailAvailable: false,
+      },
+    ],
+  });
+}
 
 beforeEach(() => {
   resetAppStore();
@@ -36,12 +62,7 @@ afterEach(() => {
 });
 
 test('renders login screen before authentication', async () => {
-  fetchMock.mockResolvedValueOnce(
-    new Response(JSON.stringify({ authenticated: false, pollIntervalMs: 10000 }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  );
+  fetchMock.mockResolvedValueOnce(jsonResponse({ authenticated: false, pollIntervalMs: 10000 }));
 
   render(<App />);
 
@@ -50,50 +71,16 @@ test('renders login screen before authentication', async () => {
 
 test('loads file explorer after login', async () => {
   fetchMock
+    .mockResolvedValueOnce(jsonResponse({ authenticated: false, pollIntervalMs: 10000 }))
     .mockResolvedValueOnce(
-      new Response(JSON.stringify({ authenticated: false, pollIntervalMs: 10000 }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
+      jsonResponse({
+        authenticated: true,
+        username: 'admin',
+        csrfToken: 'csrf',
+        pollIntervalMs: 10000,
       })
     )
-    .mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          authenticated: true,
-          username: 'admin',
-          csrfToken: 'csrf',
-          pollIntervalMs: 10000,
-        }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-    )
-    .mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          path: '',
-          parentPath: null,
-          items: [
-            {
-              name: 'Photos',
-              path: 'Photos',
-              type: 'directory',
-              size: 0,
-              modifiedAt: new Date('2026-01-01T10:00:00.000Z').toISOString(),
-              mimeType: null,
-              previewKind: null,
-              thumbnailAvailable: false,
-            },
-          ],
-        }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-    );
+    .mockResolvedValueOnce(fileListingResponse());
 
   render(<App />);
 
@@ -102,76 +89,62 @@ test('loads file explorer after login', async () => {
 
   expect(await screen.findByRole('heading', { name: /file browser/i })).toBeInTheDocument();
   expect(await screen.findByText('Photos')).toBeInTheDocument();
+  const sidebar = screen.getByRole('complementary');
+  expect(within(sidebar).getByRole('button', { name: 'Files' })).toBeInTheDocument();
+  expect(within(sidebar).getByRole('button', { name: 'Trash' })).toBeInTheDocument();
+  expect(within(sidebar).getByRole('button', { name: 'Refresh' })).toBeInTheDocument();
+  expect(within(sidebar).getByRole('button', { name: 'Log out' })).toBeInTheDocument();
 
   await waitFor(() => {
     expect(fetchMock).toHaveBeenCalledWith('/api/auth/login', expect.any(Object));
   });
 });
 
+test('does not render an empty upload queue when there are no uploads', async () => {
+  fetchMock
+    .mockResolvedValueOnce(
+      jsonResponse({
+        authenticated: true,
+        username: 'admin',
+        csrfToken: 'csrf',
+        pollIntervalMs: 10000,
+      })
+    )
+    .mockResolvedValueOnce(fileListingResponse());
+
+  render(<App />);
+
+  expect(await screen.findByText('Photos')).toBeInTheDocument();
+  expect(screen.queryByRole('region', { name: /upload queue/i })).not.toBeInTheDocument();
+
+  await act(async () => {
+    appStore.setState({
+      uploads: [
+        {
+          id: 'upload-id',
+          names: ['Photos.zip'],
+          progress: 0.5,
+          status: 'uploading',
+        },
+      ],
+    });
+  });
+
+  expect(await screen.findByRole('region', { name: /upload queue/i })).toBeInTheDocument();
+});
+
 test('preserves scroll position on manual refresh', async () => {
   fetchMock
     .mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          authenticated: true,
-          username: 'admin',
-          csrfToken: 'csrf',
-          pollIntervalMs: 10000,
-        }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      jsonResponse({
+        authenticated: true,
+        username: 'admin',
+        csrfToken: 'csrf',
+        pollIntervalMs: 10000,
+      })
     )
-    .mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          path: '',
-          parentPath: null,
-          items: [
-            {
-              name: 'Photos',
-              path: 'Photos',
-              type: 'directory',
-              size: 0,
-              modifiedAt: new Date('2026-01-01T10:00:00.000Z').toISOString(),
-              mimeType: null,
-              previewKind: null,
-              thumbnailAvailable: false,
-            },
-          ],
-        }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-    )
-    .mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          path: '',
-          parentPath: null,
-          items: [
-            {
-              name: 'Photos',
-              path: 'Photos',
-              type: 'directory',
-              size: 0,
-              modifiedAt: new Date('2026-01-01T10:00:00.000Z').toISOString(),
-              mimeType: null,
-              previewKind: null,
-              thumbnailAvailable: false,
-            },
-          ],
-        }),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-    );
+    .mockResolvedValueOnce(fileListingResponse())
+    .mockResolvedValueOnce(fileListingResponse());
 
   render(<App />);
 

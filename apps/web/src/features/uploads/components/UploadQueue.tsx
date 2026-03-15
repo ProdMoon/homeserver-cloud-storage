@@ -5,7 +5,7 @@ export function UploadQueue() {
   const uploads = useAppStore(selectUploads);
 
   return (
-    <div className="grid gap-2.5">
+    <section aria-label="Upload queue" className="grid gap-2.5">
       {uploads.map((upload) => (
         <div className="rounded-[18px] bg-white/8 p-3.5" key={upload.id}>
           <div className="text-[0.96rem] text-sidebar-text">{upload.names.join(', ')}</div>
@@ -26,6 +26,6 @@ export function UploadQueue() {
           ) : null}
         </div>
       ))}
-    </div>
+    </section>
   );
 }

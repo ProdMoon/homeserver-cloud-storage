@@ -4,11 +4,12 @@ import {
   selectBootstrapSession,
   selectCurrentPath,
   selectError,
+  selectLogout,
   selectRefreshFiles,
   selectRefreshTrash,
   selectSession,
   selectSetActiveView,
-  selectLogout,
+  selectUploads,
 } from './store/selectors';
 import { useAppStore } from './store/useAppStore';
 import { LoginScreen } from '../features/auth/components/LoginScreen';
@@ -18,6 +19,7 @@ import { TrashView } from '../features/trash/components/TrashView';
 import { UploadQueue } from '../features/uploads/components/UploadQueue';
 import { Button } from '../shared/ui/Button';
 import { ErrorBanner } from '../shared/ui/ErrorBanner';
+import { FilesIcon, LogoutIcon, RefreshIcon, TrashIcon } from '../shared/ui/Icons';
 
 export function App() {
   const activeView = useAppStore(selectActiveView);
@@ -29,6 +31,7 @@ export function App() {
   const refreshTrash = useAppStore(selectRefreshTrash);
   const session = useAppStore(selectSession);
   const setActiveView = useAppStore(selectSetActiveView);
+  const uploads = useAppStore(selectUploads);
 
   useEffect(() => {
     void bootstrapSession();
@@ -76,11 +79,41 @@ export function App() {
     return <LoginScreen />;
   }
 
+  const navActions = [
+    {
+      active: activeView === 'files',
+      icon: <FilesIcon className="size-5" />,
+      label: 'Files',
+      onClick: () => setActiveView('files'),
+    },
+    {
+      active: activeView === 'trash',
+      icon: <TrashIcon className="size-5" />,
+      label: 'Trash',
+      onClick: () => setActiveView('trash'),
+    },
+    {
+      active: false,
+      icon: <RefreshIcon className="size-5" />,
+      label: 'Refresh',
+      onClick: () =>
+        activeView === 'files'
+          ? void refreshFiles(currentPath, { preserveScroll: true })
+          : void refreshTrash({ preserveScroll: true }),
+    },
+    {
+      active: false,
+      icon: <LogoutIcon className="size-5" />,
+      label: 'Log out',
+      onClick: () => void logout(),
+    },
+  ];
+
   return (
-    <main className="grid min-h-screen gap-6 p-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-      <aside className="flex flex-col justify-between gap-5 rounded-[22px] bg-surface-sidebar p-6 text-sidebar-text shadow-cloud backdrop-blur-xl sm:rounded-[28px]">
-        <div>
-          <div>
+    <main className="flex flex-col min-h-screen gap-6 p-6 xl:grid xl:grid-cols-[320px_minmax(0,1fr)]">
+      <aside className="flex flex-col gap-5 rounded-[22px] bg-surface-sidebar px-3 py-2 text-sidebar-text shadow-cloud backdrop-blur-xl sm:rounded-[28px] xl:p-6 xl:justify-between">
+        <div className="flex flex-col gap-4">
+          <div className="hidden xl:block">
             <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
               Signed in as
             </div>
@@ -88,43 +121,26 @@ export function App() {
               {session.username}
             </h2>
           </div>
-          <p className="mt-4 max-w-[34ch] text-sidebar-copy">
-            One private admin account, browser-native previews, and a safety net trash layer.
-          </p>
-          <div className="grid gap-2.5">
-            <Button
-              active={activeView === 'files'}
-              onClick={() => setActiveView('files')}
-              type="button"
-              variant="nav"
-            >
-              Files
-            </Button>
-            <Button
-              active={activeView === 'trash'}
-              onClick={() => setActiveView('trash')}
-              type="button"
-              variant="nav"
-            >
-              Trash
-            </Button>
-            <Button
-              onClick={() =>
-                activeView === 'files'
-                  ? void refreshFiles(currentPath, { preserveScroll: true })
-                  : void refreshTrash({ preserveScroll: true })
-              }
-              type="button"
-              variant="nav"
-            >
-              Refresh
-            </Button>
-            <Button onClick={() => void logout()} type="button" variant="nav">
-              Log out
-            </Button>
+          <div className="flex items-center gap-2.5 xl:grid">
+            {navActions.map((action) => (
+              <Button
+                active={action.active}
+                aria-label={action.label}
+                className="w-12 h-8 justify-center px-0 py-0 xl:w-auto xl:h-auto xl:aspect-auto xl:justify-start xl:px-4 xl:py-3"
+                key={action.label}
+                onClick={action.onClick}
+                type="button"
+                variant="nav"
+              >
+                <span aria-hidden="true" className="xl:hidden">
+                  {action.icon}
+                </span>
+                <span className="hidden xl:inline">{action.label}</span>
+              </Button>
+            ))}
           </div>
         </div>
-        <UploadQueue />
+        {uploads.length > 0 ? <UploadQueue /> : null}
       </aside>
       <section className="flex flex-col gap-4 rounded-[22px] bg-surface-card p-6 shadow-cloud backdrop-blur-xl sm:rounded-[28px]">
         {error ? <ErrorBanner message={error} /> : null}
