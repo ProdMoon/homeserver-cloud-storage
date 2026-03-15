@@ -7,3 +7,4 @@ coverage
 .tmp
 apps/server/data
 apps/server/root
+storage
