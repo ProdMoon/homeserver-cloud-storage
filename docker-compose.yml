@@ -1,0 +1,22 @@
+services:
+  pi-home-drive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pi-home-drive:latest
+    environment:
+      PORT: ${PORT:-3000}
+      ROOT_DIR: ${ROOT_DIR:-/storage/root}
+      DATA_DIR: ${DATA_DIR:-/storage/data}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-me}
+      SESSION_SECRET: ${SESSION_SECRET:-change-this-32-bytes-minimum}
+      TRUST_PROXY: ${TRUST_PROXY:-true}
+      POLL_INTERVAL_MS: ${POLL_INTERVAL_MS:-10000}
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./storage/root:${ROOT_DIR:-/storage/root}
+      - ./storage/data:${DATA_DIR:-/storage/data}
+    restart: unless-stopped
+
