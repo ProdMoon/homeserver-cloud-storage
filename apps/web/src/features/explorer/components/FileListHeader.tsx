@@ -4,9 +4,13 @@ import {
   selectListing,
   selectSelectAll,
   selectSelectedPaths,
+  selectSetSortField,
+  selectSortDirection,
+  selectSortField,
+  selectToggleSortDirection,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
-import { Download, FolderInput, Trash2, X } from 'lucide-react';
+import { ArrowDownAZ, ArrowUpAZ, Download, FolderInput, Trash2, X } from 'lucide-react';
 import type { FileItem } from '../../../shared/types';
 import { Button } from '../../../shared/ui/Button';
 import { Checkbox } from '../../../shared/ui/Checkbox';
@@ -18,6 +22,10 @@ export function FileListHeader({ items }: { items: FileItem[] }) {
   const selectAll = useAppStore(selectSelectAll);
   const clearSelection = useAppStore(selectClearSelection);
   const listing = useAppStore(selectListing);
+  const sortField = useAppStore(selectSortField);
+  const sortDirection = useAppStore(selectSortDirection);
+  const setSortField = useAppStore(selectSetSortField);
+  const toggleSortDirection = useAppStore(selectToggleSortDirection);
 
   const {
     selectedFiles,
@@ -86,7 +94,32 @@ export function FileListHeader({ items }: { items: FileItem[] }) {
               </Button>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div className="flex w-full items-center justify-end gap-2">
+            <select
+              aria-label="Sort field"
+              className="cursor-pointer rounded-lg border border-line bg-white/40 px-2.5 py-1.5 text-xs transition outline-none focus:border-accent/50 focus:bg-white/80"
+              onChange={(event) => setSortField(event.target.value as typeof sortField)}
+              value={sortField}
+            >
+              <option value="name">Name</option>
+              <option value="size">Size</option>
+              <option value="modifiedAt">Modified</option>
+            </select>
+            <Button
+              aria-label="Toggle sort direction"
+              onClick={() => toggleSortDirection()}
+              size="sm"
+              type="button"
+            >
+              {sortDirection === 'asc' ? (
+                <ArrowDownAZ className="size-4" />
+              ) : (
+                <ArrowUpAZ className="size-4" />
+              )}
+            </Button>
+          </div>
+        )}
       </div>
       {folderPickerOpen ? (
         <FolderPickerDialog

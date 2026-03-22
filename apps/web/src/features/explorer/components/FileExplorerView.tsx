@@ -2,13 +2,10 @@ import {
   selectCurrentPath,
   selectListing,
   selectSetCurrentPath,
-  selectSetSortField,
   selectSortDirection,
   selectSortField,
-  selectToggleSortDirection,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
-import { Button } from '../../../shared/ui/Button';
 import { sortItems } from '../lib/sort';
 import { BreadcrumbNav } from './BreadcrumbNav';
 import { ExplorerToolbar } from './ExplorerToolbar';
@@ -19,8 +16,6 @@ export function FileExplorerView() {
   const listing = useAppStore(selectListing);
   const sortField = useAppStore(selectSortField);
   const sortDirection = useAppStore(selectSortDirection);
-  const setSortField = useAppStore(selectSetSortField);
-  const toggleSortDirection = useAppStore(selectToggleSortDirection);
   const setCurrentPath = useAppStore(selectSetCurrentPath);
   const items = listing ? sortItems(listing.items, sortField, sortDirection) : [];
 
@@ -37,24 +32,7 @@ export function FileExplorerView() {
         </div>
         <ExplorerToolbar />
       </header>
-      <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-between">
-        <BreadcrumbNav pathValue={listing?.path ?? currentPath} onNavigate={setCurrentPath} />
-        <div className="flex flex-wrap items-center gap-2">
-          <select
-            aria-label="Sort field"
-            className="cursor-pointer rounded-[14px] border border-line bg-white/40 px-4 py-3 text-sm transition outline-none focus:border-accent/50 focus:bg-white/80"
-            onChange={(event) => setSortField(event.target.value as typeof sortField)}
-            value={sortField}
-          >
-            <option value="name">Name</option>
-            <option value="size">Size</option>
-            <option value="modifiedAt">Modified</option>
-          </select>
-          <Button onClick={() => toggleSortDirection()} type="button">
-            {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
-          </Button>
-        </div>
-      </div>
+      <BreadcrumbNav pathValue={listing?.path ?? currentPath} onNavigate={setCurrentPath} />
       <FileList items={items} />
     </div>
   );

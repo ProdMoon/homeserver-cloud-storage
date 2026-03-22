@@ -4,6 +4,7 @@ import {
   selectEnqueueUpload,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
+import { cn } from '../../../shared/lib/cn';
 import { Button, buttonVariants } from '../../../shared/ui/Button';
 
 export function ExplorerToolbar() {
@@ -22,11 +23,22 @@ export function ExplorerToolbar() {
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3">
-      <Button onClick={() => void handleCreateFolder()} type="button">
+    <div className="flex flex-wrap items-center gap-3">
+      <Button
+        onClick={() => void handleCreateFolder()}
+        type="button"
+        size="sm"
+        className="md:rounded-[14px] md:px-4 md:py-3 md:text-sm"
+      >
         New folder
       </Button>
-      <label className={buttonVariants({ variant: 'primary' })} htmlFor="upload-input">
+      <label
+        className={cn(
+          buttonVariants({ variant: 'primary', size: 'sm' }),
+          'md:rounded-[14px] md:px-4 md:py-3 md:text-sm'
+        )}
+        htmlFor="upload-input"
+      >
         Upload files
       </label>
       <input
