@@ -114,24 +114,56 @@ export function FileRow({ item }: { item: FileItem }) {
       </div>
       <div className="flex min-w-0 flex-wrap items-center gap-3 xl:flex-nowrap xl:justify-end">
         {item.type === 'directory' ? (
-          <Button onClick={() => setCurrentPath(item.path)} type="button">
+          <Button
+            onClick={() => setCurrentPath(item.path)}
+            type="button"
+            size="sm"
+            className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+          >
             Open
           </Button>
         ) : (
-          <Button onClick={() => openPreview(item)} type="button">
+          <Button
+            onClick={() => openPreview(item)}
+            type="button"
+            size="sm"
+            className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+          >
             Preview
           </Button>
         )}
         {item.type === 'file' ? (
-          <LinkButton href={downloadUrl(item.path)}>Download</LinkButton>
+          <LinkButton
+            href={downloadUrl(item.path)}
+            size="sm"
+            className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+          >
+            Download
+          </LinkButton>
         ) : null}
-        <Button onClick={() => void handleRename()} type="button">
+        <Button
+          onClick={() => void handleRename()}
+          type="button"
+          size="sm"
+          className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+        >
           Rename
         </Button>
-        <Button onClick={() => void handleMove()} type="button">
+        <Button
+          onClick={() => void handleMove()}
+          type="button"
+          size="sm"
+          className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+        >
           Move
         </Button>
-        <Button onClick={() => void handleDelete()} type="button" variant="danger">
+        <Button
+          onClick={() => void handleDelete()}
+          type="button"
+          variant="danger"
+          size="sm"
+          className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+        >
           Trash
         </Button>
       </div>

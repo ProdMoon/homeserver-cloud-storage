@@ -3,9 +3,10 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/cn';
 
 type Variant = 'primary' | 'ghost' | 'danger' | 'nav';
+type Size = 'default' | 'sm';
 
 export const buttonVariants = cva(
-  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-[14px] border border-transparent px-4 py-3 text-sm font-medium no-underline transition duration-150 ease-out hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0',
+  'inline-flex cursor-pointer items-center justify-center gap-2 border border-transparent font-medium no-underline transition duration-150 ease-out hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0',
   {
     variants: {
       variant: {
@@ -14,6 +15,10 @@ export const buttonVariants = cva(
         ghost: 'bg-black/5 text-inherit hover:bg-black/8',
         danger: 'bg-danger-wash text-danger hover:bg-danger/20',
         nav: 'w-full justify-start bg-white/8 text-sidebar-text hover:bg-white/12',
+      },
+      size: {
+        default: 'rounded-[14px] px-4 py-3 text-sm',
+        sm: 'rounded-[10px] px-2.5 py-1.5 text-xs',
       },
       active: {
         false: '',
@@ -30,6 +35,7 @@ export const buttonVariants = cva(
     ],
     defaultVariants: {
       variant: 'ghost',
+      size: 'default',
       active: false,
     },
   }
@@ -42,10 +48,19 @@ interface SharedButtonProps extends VariantProps<typeof buttonVariants> {
 type ButtonProps = SharedButtonProps & ButtonHTMLAttributes<HTMLButtonElement>;
 type LinkButtonProps = SharedButtonProps & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export function Button({ variant = 'ghost', active = false, className, ...props }: ButtonProps) {
+export function Button({
+  variant = 'ghost',
+  size = 'default',
+  active = false,
+  className,
+  ...props
+}: ButtonProps) {
   return (
     <button
-      className={cn(buttonVariants({ variant: variant as Variant, active }), className)}
+      className={cn(
+        buttonVariants({ variant: variant as Variant, size: size as Size, active }),
+        className
+      )}
       {...props}
     />
   );
@@ -53,13 +68,17 @@ export function Button({ variant = 'ghost', active = false, className, ...props 
 
 export function LinkButton({
   variant = 'ghost',
+  size = 'default',
   active = false,
   className,
   ...props
 }: LinkButtonProps) {
   return (
     <a
-      className={cn(buttonVariants({ variant: variant as Variant, active }), className)}
+      className={cn(
+        buttonVariants({ variant: variant as Variant, size: size as Size, active }),
+        className
+      )}
       {...props}
     />
   );

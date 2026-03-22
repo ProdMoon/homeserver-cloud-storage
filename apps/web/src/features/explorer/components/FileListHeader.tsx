@@ -41,7 +41,7 @@ export function FileListHeader({ items }: { items: FileItem[] }) {
 
   return (
     <>
-      <div className="sticky top-0 z-10 flex items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] tracking-[0.06em] text-ink-muted uppercase">
+      <div className="sticky top-0 z-10 flex h-14 items-center gap-4 bg-surface-panel-strong px-4.5 text-[0.78rem] tracking-[0.06em] text-ink-muted">
         <Checkbox
           aria-label="Select all"
           checked={allSelected}
@@ -49,22 +49,29 @@ export function FileListHeader({ items }: { items: FileItem[] }) {
           onChange={handleSelectAllChange}
         />
         {hasSelection ? (
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex w-full items-center justify-between gap-3">
             <span className="text-sm font-medium text-ink">
               {selectedPaths.size} item{selectedPaths.size !== 1 ? 's' : ''} selected
             </span>
-            <Button disabled={selectedFiles.length === 0} onClick={handleDownload} type="button">
-              Download
-            </Button>
-            <Button onClick={() => setFolderPickerOpen(true)} type="button">
-              Move
-            </Button>
-            <Button onClick={() => void handleTrash()} type="button" variant="danger">
-              Trash
-            </Button>
-            <Button onClick={clearSelection} type="button">
-              Clear
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                disabled={selectedFiles.length === 0}
+                onClick={handleDownload}
+                size="sm"
+                type="button"
+              >
+                Download
+              </Button>
+              <Button onClick={() => setFolderPickerOpen(true)} size="sm" type="button">
+                Move
+              </Button>
+              <Button onClick={() => void handleTrash()} size="sm" type="button" variant="danger">
+                Trash
+              </Button>
+              <Button onClick={clearSelection} size="sm" type="button">
+                Clear
+              </Button>
+            </div>
           </div>
         ) : null}
       </div>

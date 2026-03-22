@@ -14,9 +14,10 @@ export function useBatchActions(items: FileItem[]) {
   const batchMove = useAppStore(selectBatchMove);
   const [folderPickerOpen, setFolderPickerOpen] = useState(false);
 
-  const selectedFiles = selectedPaths.size > 0
-    ? items.filter((item) => selectedPaths.has(item.path) && item.type === 'file')
-    : [];
+  const selectedFiles =
+    selectedPaths.size > 0
+      ? items.filter((item) => selectedPaths.has(item.path) && item.type === 'file')
+      : [];
 
   function handleDownload() {
     for (const file of selectedFiles) {
