@@ -35,6 +35,7 @@ export function Checkbox({
           : 'border-ink-muted/40 bg-transparent hover:border-accent/60'
       )}
       data-checkbox
+      onClick={(e) => e.stopPropagation()}
       onPointerDown={(e) => {
         e.stopPropagation();
         onChange();
