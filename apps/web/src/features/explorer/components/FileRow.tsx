@@ -3,6 +3,7 @@ import { previewUrl, downloadUrl } from '../../../shared/api/files';
 import { cn } from '../../../shared/lib/cn';
 import { formatBytes, formatDate, previewLabel } from '../../../shared/lib/formatters';
 import type { FileItem } from '../../../shared/types';
+import { Download, Eye, FolderInput, FolderOpen, Pencil, Trash2 } from 'lucide-react';
 import { Button, LinkButton } from '../../../shared/ui/Button';
 import { Checkbox } from '../../../shared/ui/Checkbox';
 import {
@@ -112,59 +113,40 @@ export function FileRow({ item }: { item: FileItem }) {
           </div>
         </div>
       </div>
-      <div className="flex min-w-0 flex-wrap items-center gap-3 xl:flex-nowrap xl:justify-end">
+      <div className="flex min-w-0 flex-wrap items-center gap-1.5 xl:flex-nowrap xl:justify-end">
         {item.type === 'directory' ? (
           <Button
+            aria-label="Open"
             onClick={() => setCurrentPath(item.path)}
-            type="button"
             size="sm"
-            className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
+            type="button"
           >
-            Open
+            <FolderOpen className="size-4" />
           </Button>
         ) : (
-          <Button
-            onClick={() => openPreview(item)}
-            type="button"
-            size="sm"
-            className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
-          >
-            Preview
+          <Button aria-label="Preview" onClick={() => openPreview(item)} size="sm" type="button">
+            <Eye className="size-4" />
           </Button>
         )}
         {item.type === 'file' ? (
-          <LinkButton
-            href={downloadUrl(item.path)}
-            size="sm"
-            className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
-          >
-            Download
+          <LinkButton aria-label="Download" href={downloadUrl(item.path)} size="sm">
+            <Download className="size-4" />
           </LinkButton>
         ) : null}
-        <Button
-          onClick={() => void handleRename()}
-          type="button"
-          size="sm"
-          className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
-        >
-          Rename
+        <Button aria-label="Rename" onClick={() => void handleRename()} size="sm" type="button">
+          <Pencil className="size-4" />
+        </Button>
+        <Button aria-label="Move" onClick={() => void handleMove()} size="sm" type="button">
+          <FolderInput className="size-4" />
         </Button>
         <Button
-          onClick={() => void handleMove()}
-          type="button"
-          size="sm"
-          className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
-        >
-          Move
-        </Button>
-        <Button
+          aria-label="Trash"
           onClick={() => void handleDelete()}
+          size="sm"
           type="button"
           variant="danger"
-          size="sm"
-          className="xl:rounded-[14px] xl:px-4 xl:py-3 xl:text-sm"
         >
-          Trash
+          <Trash2 className="size-4" />
         </Button>
       </div>
     </div>

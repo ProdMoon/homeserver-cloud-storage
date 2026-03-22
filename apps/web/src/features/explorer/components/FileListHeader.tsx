@@ -6,6 +6,7 @@ import {
   selectSelectedPaths,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
+import { Download, FolderInput, Trash2, X } from 'lucide-react';
 import type { FileItem } from '../../../shared/types';
 import { Button } from '../../../shared/ui/Button';
 import { Checkbox } from '../../../shared/ui/Checkbox';
@@ -55,21 +56,33 @@ export function FileListHeader({ items }: { items: FileItem[] }) {
             </span>
             <div className="flex gap-2">
               <Button
+                aria-label="Download"
                 disabled={selectedFiles.length === 0}
                 onClick={handleDownload}
                 size="sm"
                 type="button"
               >
-                Download
+                <Download className="size-4" />
               </Button>
-              <Button onClick={() => setFolderPickerOpen(true)} size="sm" type="button">
-                Move
+              <Button
+                aria-label="Move"
+                onClick={() => setFolderPickerOpen(true)}
+                size="sm"
+                type="button"
+              >
+                <FolderInput className="size-4" />
               </Button>
-              <Button onClick={() => void handleTrash()} size="sm" type="button" variant="danger">
-                Trash
+              <Button
+                aria-label="Trash"
+                onClick={() => void handleTrash()}
+                size="sm"
+                type="button"
+                variant="danger"
+              >
+                <Trash2 className="size-4" />
               </Button>
-              <Button onClick={clearSelection} size="sm" type="button">
-                Clear
+              <Button aria-label="Clear selection" onClick={clearSelection} size="sm" type="button">
+                <X className="size-4" />
               </Button>
             </div>
           </div>

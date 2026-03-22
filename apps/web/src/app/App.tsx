@@ -19,7 +19,7 @@ import { TrashView } from '../features/trash/components/TrashView';
 import { UploadQueue } from '../features/uploads/components/UploadQueue';
 import { Button } from '../shared/ui/Button';
 import { ErrorBanner } from '../shared/ui/ErrorBanner';
-import { FilesIcon, LogoutIcon, RefreshIcon, TrashIcon } from '../shared/ui/Icons';
+import { FolderOpen, LogOut, RefreshCw, Trash2 } from 'lucide-react';
 
 export function App() {
   const activeView = useAppStore(selectActiveView);
@@ -82,19 +82,19 @@ export function App() {
   const navActions = [
     {
       active: activeView === 'files',
-      icon: <FilesIcon className="size-5" />,
+      icon: <FolderOpen className="size-5" />,
       label: 'Files',
       onClick: () => setActiveView('files'),
     },
     {
       active: activeView === 'trash',
-      icon: <TrashIcon className="size-5" />,
+      icon: <Trash2 className="size-5" />,
       label: 'Trash',
       onClick: () => setActiveView('trash'),
     },
     {
       active: false,
-      icon: <RefreshIcon className="size-5" />,
+      icon: <RefreshCw className="size-5" />,
       label: 'Refresh',
       onClick: () =>
         activeView === 'files'
@@ -103,7 +103,7 @@ export function App() {
     },
     {
       active: false,
-      icon: <LogoutIcon className="size-5" />,
+      icon: <LogOut className="size-5" />,
       label: 'Log out',
       onClick: () => void logout(),
     },
