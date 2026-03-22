@@ -17,7 +17,6 @@ import {
   selectToggleSelectedPath,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
-import { explorerListColumns } from './layout';
 
 export function FileRow({ item }: { item: FileItem }) {
   const selectedPath = useAppStore(selectSelectedPath);
@@ -77,8 +76,7 @@ export function FileRow({ item }: { item: FileItem }) {
   return (
     <div
       className={cn(
-        'grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2.5 border-t border-line px-4.5 py-3.5 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-inset xl:items-center xl:gap-4',
-        explorerListColumns,
+        'grid grid-cols-1 gap-2.5 border-t border-line px-4.5 py-3.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-inset xl:items-center xl:gap-4',
         (selectedPath === item.path || selectedPaths.has(item.path)) && 'bg-accent-wash'
       )}
       data-path={item.path}
@@ -88,13 +86,13 @@ export function FileRow({ item }: { item: FileItem }) {
       role="button"
       tabIndex={0}
     >
-      <Checkbox
-        aria-label={`Select ${item.name}`}
-        checked={selectedPaths.has(item.path)}
-        onChange={() => toggleSelectedPath(item.path)}
-      />
-      <div className="flex min-w-0 items-center gap-3.5">
-        <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-[18px] bg-[linear-gradient(135deg,rgba(219,109,48,0.24),rgba(19,35,55,0.14))] font-mono text-xs">
+      <div className="flex items-center gap-3.5">
+        <Checkbox
+          aria-label={`Select ${item.name}`}
+          checked={selectedPaths.has(item.path)}
+          onChange={() => toggleSelectedPath(item.path)}
+        />
+        <div className="grid h-10 w-10 place-items-center overflow-hidden rounded-md bg-[linear-gradient(135deg,rgba(219,109,48,0.24),rgba(19,35,55,0.14))] font-mono text-xs xl:h-14 xl:w-14 xl:rounded-2xl">
           {item.thumbnailAvailable ? (
             <img
               alt=""
@@ -106,17 +104,15 @@ export function FileRow({ item }: { item: FileItem }) {
           )}
         </div>
         <div className="min-w-0">
-          <strong className="block truncate">{item.name}</strong>
-          <div className="text-sm text-ink-muted">
-            {item.type === 'directory' ? 'Folder' : (item.mimeType ?? 'Binary file')}
+          <strong className="mb-0.5 block truncate">{item.name}</strong>
+          <div className="flex items-center gap-2.5 text-sm text-ink-muted">
+            <div>{item.type === 'directory' ? 'Folder' : (item.mimeType ?? 'Binary file')}</div>
+            {item.type !== 'directory' && <div>{formatBytes(item.size)}</div>}
+            <div>{formatDate(item.modifiedAt)}</div>
           </div>
         </div>
       </div>
-      <span className="text-sm text-ink-muted">{formatDate(item.modifiedAt)}</span>
-      <span className="text-sm text-ink-muted">
-        {item.type === 'directory' ? '—' : formatBytes(item.size)}
-      </span>
-      <div className="flex min-w-0 flex-wrap items-center gap-3 xl:flex-nowrap xl:justify-between">
+      <div className="flex min-w-0 flex-wrap items-center gap-3 xl:flex-nowrap xl:justify-end">
         {item.type === 'directory' ? (
           <Button onClick={() => setCurrentPath(item.path)} type="button">
             Open
