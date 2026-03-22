@@ -1,22 +1,27 @@
-import { selectSetCurrentPath } from '../../../app/store/selectors';
-import { useAppStore } from '../../../app/store/useAppStore';
 import { breadcrumbs } from '../lib/breadcrumbs';
 
-export function BreadcrumbNav({ pathValue }: { pathValue: string }) {
-  const setCurrentPath = useAppStore(selectSetCurrentPath);
+interface BreadcrumbNavProps {
+  pathValue: string;
+  onNavigate: (path: string) => void;
+}
+
+export function BreadcrumbNav({ pathValue, onNavigate }: BreadcrumbNavProps) {
+  const crumbs = breadcrumbs(pathValue);
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {breadcrumbs(pathValue).map((crumb) => (
-        <button
-          className="cursor-pointer rounded-full bg-black/5 px-3 py-2 text-sm transition duration-150 ease-out hover:-translate-y-px focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:outline-none"
-          key={crumb.path || 'root'}
-          onClick={() => setCurrentPath(crumb.path)}
-          type="button"
-        >
-          {crumb.label}
-        </button>
+    <nav className="flex flex-wrap items-center gap-1 text-sm">
+      {crumbs.map((crumb, index) => (
+        <span className="flex items-center gap-1" key={crumb.path || 'root'}>
+          {index > 0 ? <span className="text-ink-muted">/</span> : null}
+          <button
+            className="cursor-pointer rounded-lg px-2 py-1 text-accent hover:bg-accent-wash"
+            onClick={() => onNavigate(crumb.path)}
+            type="button"
+          >
+            {crumb.label}
+          </button>
+        </span>
       ))}
-    </div>
+    </nav>
   );
 }

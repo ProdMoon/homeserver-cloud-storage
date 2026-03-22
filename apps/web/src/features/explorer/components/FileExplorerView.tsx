@@ -1,6 +1,7 @@
 import {
   selectCurrentPath,
   selectListing,
+  selectSetCurrentPath,
   selectSetSortField,
   selectSortDirection,
   selectSortField,
@@ -20,6 +21,7 @@ export function FileExplorerView() {
   const sortDirection = useAppStore(selectSortDirection);
   const setSortField = useAppStore(selectSetSortField);
   const toggleSortDirection = useAppStore(selectToggleSortDirection);
+  const setCurrentPath = useAppStore(selectSetCurrentPath);
   const items = listing ? sortItems(listing.items, sortField, sortDirection) : [];
 
   return (
@@ -36,7 +38,7 @@ export function FileExplorerView() {
         <ExplorerToolbar />
       </header>
       <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-between">
-        <BreadcrumbNav pathValue={listing?.path ?? currentPath} />
+        <BreadcrumbNav pathValue={listing?.path ?? currentPath} onNavigate={setCurrentPath} />
         <div className="flex flex-wrap items-center gap-2">
           <select
             aria-label="Sort field"
