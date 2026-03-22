@@ -29,7 +29,7 @@ export function FileExplorerView() {
     <div className="flex flex-col gap-5">
       <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
+          <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
             Explorer
           </div>
           <h1 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">
@@ -44,7 +44,7 @@ export function FileExplorerView() {
         <div className="flex flex-wrap items-center gap-2">
           <select
             aria-label="Sort field"
-            className="cursor-pointer rounded-[14px] border border-line bg-white/40 px-4 py-3 text-sm outline-none transition focus:border-accent/50 focus:bg-white/80"
+            className="cursor-pointer rounded-[14px] border border-line bg-white/40 px-4 py-3 text-sm transition outline-none focus:border-accent/50 focus:bg-white/80"
             onChange={(event) => setSortField(event.target.value as typeof sortField)}
             value={sortField}
           >

@@ -35,7 +35,7 @@ export function TrashView() {
   return (
     <div className="flex flex-col gap-5">
       <header>
-        <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
+        <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
           Trash
         </div>
         <h1 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">
@@ -43,10 +43,10 @@ export function TrashView() {
         </h1>
       </header>
       <div className="overflow-auto rounded-3xl border border-line bg-surface-panel">
-        <div className="min-w-full w-max">
+        <div className="w-max min-w-full">
           <div
             className={cn(
-              'hidden items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] uppercase tracking-[0.06em] text-ink-muted xl:grid',
+              'hidden items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] tracking-[0.06em] text-ink-muted uppercase xl:grid',
               trashColumns
             )}
           >
@@ -81,7 +81,7 @@ export function TrashView() {
                   <div className="text-sm text-ink-muted">{formatBytes(item.sizeBytes)}</div>
                 </div>
               </div>
-              <span className="wrap-break-word font-mono text-[0.82rem] text-ink-muted">
+              <span className="font-mono text-[0.82rem] wrap-break-word text-ink-muted">
                 {item.originalPath}
               </span>
               <span className="text-sm text-ink-muted">{formatDate(item.deletedAt)}</span>

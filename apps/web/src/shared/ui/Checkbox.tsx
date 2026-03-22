@@ -29,7 +29,7 @@ export function Checkbox({
       aria-checked={indeterminate ? 'mixed' : checked}
       aria-label={ariaLabel}
       className={cn(
-        'grid h-4 w-4 shrink-0 cursor-pointer place-items-center rounded-[4px] border transition-colors',
+        'grid h-4 w-4 shrink-0 cursor-pointer place-items-center rounded-sm border transition-colors',
         active
           ? 'border-accent bg-accent text-white'
           : 'border-ink-muted/40 bg-transparent hover:border-accent/60'

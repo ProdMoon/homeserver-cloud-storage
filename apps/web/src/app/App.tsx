@@ -110,11 +110,11 @@ export function App() {
   ];
 
   return (
-    <main className="flex flex-col min-h-screen gap-6 p-6 xl:grid xl:grid-cols-[320px_minmax(0,1fr)]">
-      <aside className="flex flex-col gap-5 rounded-[22px] bg-surface-sidebar px-3 py-2 text-sidebar-text shadow-cloud backdrop-blur-xl sm:rounded-[28px] xl:p-6 xl:justify-between">
+    <main className="flex min-h-screen flex-col gap-6 p-6 xl:grid xl:grid-cols-[320px_minmax(0,1fr)]">
+      <aside className="flex flex-col gap-5 rounded-[22px] bg-surface-sidebar px-3 py-2 text-sidebar-text shadow-cloud backdrop-blur-xl sm:rounded-[28px] xl:justify-between xl:p-6">
         <div className="flex flex-col gap-4">
           <div className="hidden xl:block">
-            <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
+            <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
               Signed in as
             </div>
             <h2 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">
@@ -126,7 +126,7 @@ export function App() {
               <Button
                 active={action.active}
                 aria-label={action.label}
-                className="w-12 h-8 justify-center px-0 py-0 xl:w-auto xl:h-auto xl:aspect-auto xl:justify-start xl:px-4 xl:py-3"
+                className="h-8 w-12 justify-center px-0 py-0 xl:aspect-auto xl:h-auto xl:w-auto xl:justify-start xl:px-4 xl:py-3"
                 key={action.label}
                 onClick={action.onClick}
                 type="button"

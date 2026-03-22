@@ -77,7 +77,7 @@ export function FileRow({ item }: { item: FileItem }) {
   return (
     <div
       className={cn(
-        'grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2.5 border-t border-line px-4.5 py-3.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/40 xl:items-center xl:gap-4',
+        'grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2.5 border-t border-line px-4.5 py-3.5 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-inset xl:items-center xl:gap-4',
         explorerListColumns,
         (selectedPath === item.path || selectedPaths.has(item.path)) && 'bg-accent-wash'
       )}

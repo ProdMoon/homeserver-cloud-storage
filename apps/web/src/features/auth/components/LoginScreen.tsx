@@ -26,7 +26,7 @@ export function LoginScreen() {
           className="pointer-events-none absolute -right-[12%] -bottom-[36%] h-55 w-55 rotate-12 rounded-full bg-[radial-gradient(circle,rgba(234,152,71,0.7),transparent_70%)]"
         />
         <div className="relative z-10">
-          <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
+          <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
             Pi Home Drive
           </div>
           <h1 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.04em]">
@@ -41,7 +41,7 @@ export function LoginScreen() {
               Username
             </label>
             <input
-              className="rounded-[14px] border border-white/12 bg-white/8 px-4 py-3.5 text-inherit outline-none transition focus:border-accent/50 focus:bg-white/12"
+              className="rounded-[14px] border border-white/12 bg-white/8 px-4 py-3.5 text-inherit transition outline-none focus:border-accent/50 focus:bg-white/12"
               id={usernameId}
               value={username}
               onChange={(event) => setUsername(event.target.value)}
@@ -50,7 +50,7 @@ export function LoginScreen() {
               Password
             </label>
             <input
-              className="rounded-[14px] border border-white/12 bg-white/8 px-4 py-3.5 text-inherit outline-none transition focus:border-accent/50 focus:bg-white/12"
+              className="rounded-[14px] border border-white/12 bg-white/8 px-4 py-3.5 text-inherit transition outline-none focus:border-accent/50 focus:bg-white/12"
               id={passwordId}
               type="password"
               value={password}

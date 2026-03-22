@@ -32,7 +32,7 @@ export function PreviewModal() {
       <div className="max-h-[calc(100vh-48px)] w-full max-w-6xl overflow-hidden rounded-[22px] bg-preview-surface shadow-cloud backdrop-blur-xl sm:rounded-[28px]">
         <div className="flex flex-col gap-3 border-b border-line px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
+            <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
               {previewLabel(file.previewKind)}
             </div>
             <h2 className="mt-3 text-[clamp(2rem,4vw,2.2rem)] leading-[1.05] tracking-[-0.04em]">
@@ -73,7 +73,7 @@ export function PreviewModal() {
               {textPreviewLoading ? <p>Loading text preview...</p> : null}
               {textPreviewError ? <ErrorBanner message={textPreviewError} /> : null}
               {!textPreviewLoading && !textPreviewError ? (
-                <pre className="m-0 whitespace-pre-wrap wrap-break-word font-mono">
+                <pre className="m-0 font-mono wrap-break-word whitespace-pre-wrap">
                   {textPreviewContent}
                 </pre>
               ) : null}

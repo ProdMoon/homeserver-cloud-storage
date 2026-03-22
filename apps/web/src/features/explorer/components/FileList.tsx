@@ -57,10 +57,10 @@ export function FileList({ items }: { items: FileItem[] }) {
       onKeyDown={handleKeyDown}
       ref={containerRef}
     >
-      <div className="min-w-full w-max">
+      <div className="w-max min-w-full">
         <div
           className={cn(
-            'hidden items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] uppercase tracking-[0.06em] text-ink-muted xl:grid',
+            'hidden items-center gap-4 bg-surface-panel-strong px-4.5 py-3.5 font-mono text-[0.78rem] tracking-[0.06em] text-ink-muted uppercase xl:grid',
             explorerListColumns
           )}
         >
