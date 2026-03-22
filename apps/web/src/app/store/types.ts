@@ -30,6 +30,7 @@ export interface ExplorerSlice {
   currentPath: string;
   listing: DirectoryListing | null;
   selectedPath: string | null;
+  selectedPaths: Set<string>;
   filesLoading: boolean;
   sortField: SortField;
   sortDirection: SortDirection;
@@ -37,11 +38,17 @@ export interface ExplorerSlice {
   setSelectedPath: (path: string | null) => void;
   setSortField: (field: SortField) => void;
   toggleSortDirection: () => void;
+  toggleSelectedPath: (path: string) => void;
+  setSelectedPaths: (paths: Set<string>) => void;
+  selectAll: () => void;
+  clearSelection: () => void;
   refreshFiles: (path?: string, options?: RefreshOptions) => Promise<void>;
   createFolder: (name: string) => Promise<void>;
   renameItem: (item: FileItem, nextName: string) => Promise<void>;
   moveItem: (item: FileItem, destinationPath: string) => Promise<void>;
   deleteItem: (item: FileItem) => Promise<void>;
+  batchDelete: (paths: string[]) => Promise<void>;
+  batchMove: (paths: string[], destinationPath: string) => Promise<void>;
 }
 
 export interface TrashSlice {

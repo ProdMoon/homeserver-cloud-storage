@@ -35,4 +35,11 @@ export const selectTextPreviewLoading = (state: AppStore) => state.textPreviewLo
 export const selectToggleSortDirection = (state: AppStore) => state.toggleSortDirection;
 export const selectTrashItems = (state: AppStore) => state.trashItems;
 export const selectTrashLoading = (state: AppStore) => state.trashLoading;
+export const selectSelectedPaths = (state: AppStore) => state.selectedPaths;
+export const selectToggleSelectedPath = (state: AppStore) => state.toggleSelectedPath;
+export const selectSetSelectedPaths = (state: AppStore) => state.setSelectedPaths;
+export const selectSelectAll = (state: AppStore) => state.selectAll;
+export const selectClearSelection = (state: AppStore) => state.clearSelection;
+export const selectBatchDelete = (state: AppStore) => state.batchDelete;
+export const selectBatchMove = (state: AppStore) => state.batchMove;
 export const selectUploads = (state: AppStore) => state.uploads;

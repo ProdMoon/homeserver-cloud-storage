@@ -1,17 +1,62 @@
-import { selectFilesLoading, selectListing } from '../../../app/store/selectors';
+import { useCallback, useRef } from 'react';
+import {
+  selectClearSelection,
+  selectFilesLoading,
+  selectListing,
+  selectSelectAll,
+  selectSelectedPaths,
+} from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
 import { cn } from '../../../shared/lib/cn';
 import { EmptyState } from '../../../shared/ui/EmptyState';
 import type { FileItem } from '../../../shared/types';
+import { Checkbox } from '../../../shared/ui/Checkbox';
 import { FileRow } from './FileRow';
 import { explorerListColumns } from './layout';
+import { useDragSelect } from '../hooks/useDragSelect';
 
 export function FileList({ items }: { items: FileItem[] }) {
   const filesLoading = useAppStore(selectFilesLoading);
   const listing = useAppStore(selectListing);
+  const selectedPaths = useAppStore(selectSelectedPaths);
+  const selectAll = useAppStore(selectSelectAll);
+  const clearSelection = useAppStore(selectClearSelection);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useDragSelect(containerRef);
+
+  const allSelected = items.length > 0 && selectedPaths.size === items.length;
+  const someSelected = selectedPaths.size > 0 && !allSelected;
+
+  const handleSelectAllChange = useCallback(() => {
+    if (allSelected) {
+      clearSelection();
+    } else {
+      selectAll();
+    }
+  }, [allSelected, clearSelection, selectAll]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Escape') {
+        clearSelection();
+        return;
+      }
+
+      if ((event.metaKey || event.ctrlKey) && event.key === 'a') {
+        event.preventDefault();
+        selectAll();
+      }
+    },
+    [clearSelection, selectAll]
+  );
 
   return (
-    <div className="overflow-auto rounded-3xl border border-line bg-surface-panel">
+    <div
+      className="overflow-auto rounded-3xl border border-line bg-surface-panel"
+      onKeyDown={handleKeyDown}
+      ref={containerRef}
+    >
       <div className="min-w-full w-max">
         <div
           className={cn(
@@ -19,6 +64,12 @@ export function FileList({ items }: { items: FileItem[] }) {
             explorerListColumns
           )}
         >
+          <Checkbox
+            aria-label="Select all"
+            checked={allSelected}
+            indeterminate={someSelected}
+            onChange={handleSelectAllChange}
+          />
           <span>Name</span>
           <span>Modified</span>
           <span>Size</span>

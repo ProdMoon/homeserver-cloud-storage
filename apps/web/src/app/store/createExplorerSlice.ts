@@ -20,16 +20,40 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
   currentPath: '',
   listing: null,
   selectedPath: null,
+  selectedPaths: new Set<string>(),
   filesLoading: false,
   sortField: 'name',
   sortDirection: 'asc',
-  setCurrentPath: (currentPath) => set({ currentPath }),
+  setCurrentPath: (currentPath) => set({ currentPath, selectedPaths: new Set() }),
   setSelectedPath: (selectedPath) => set({ selectedPath }),
   setSortField: (sortField) => set({ sortField }),
   toggleSortDirection: () =>
     set((state) => ({
       sortDirection: state.sortDirection === 'asc' ? 'desc' : 'asc',
     })),
+  toggleSelectedPath: (path) =>
+    set((state) => {
+      const next = new Set(state.selectedPaths);
+
+      if (next.has(path)) {
+        next.delete(path);
+      } else {
+        next.add(path);
+      }
+
+      return { selectedPaths: next };
+    }),
+  setSelectedPaths: (selectedPaths) => set({ selectedPaths }),
+  selectAll: () => {
+    const { listing } = get();
+
+    if (!listing) {
+      return;
+    }
+
+    set({ selectedPaths: new Set(listing.items.map((item) => item.path)) });
+  },
+  clearSelection: () => set({ selectedPaths: new Set() }),
   refreshFiles: async (path = get().currentPath, options = {}) => {
     const scrollPosition = captureWindowScroll(options.preserveScroll);
 
@@ -39,15 +63,23 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
 
     try {
       const nextListing = await listFiles(path);
-      set((state) => ({
-        listing: nextListing,
-        currentPath: nextListing.path,
-        selectedPath:
-          state.selectedPath && nextListing.items.some((item) => item.path === state.selectedPath)
-            ? state.selectedPath
-            : null,
-        error: null,
-      }));
+      set((state) => {
+        const remainingPaths = new Set(nextListing.items.map((item) => item.path));
+        const prunedSelection = new Set(
+          [...state.selectedPaths].filter((p) => remainingPaths.has(p))
+        );
+
+        return {
+          listing: nextListing,
+          currentPath: nextListing.path,
+          selectedPath:
+            state.selectedPath && nextListing.items.some((item) => item.path === state.selectedPath)
+              ? state.selectedPath
+              : null,
+          selectedPaths: prunedSelection,
+          error: null,
+        };
+      });
       restoreWindowScroll(scrollPosition);
     } catch (error) {
       set({
@@ -116,5 +148,52 @@ export const createExplorerSlice: StoreSlice<ExplorerSlice> = (set, get) => ({
         error: error instanceof Error ? error.message : 'Failed to move item to trash.',
       });
     }
+  },
+  batchDelete: async (paths) => {
+    const { currentPath, previewing, refreshFiles, session } = get();
+    const csrfToken = requireCsrfToken(session?.csrfToken);
+
+    const results = await Promise.allSettled(paths.map((p) => deleteFile(p, csrfToken)));
+
+    if (previewing && paths.includes(previewing.path)) {
+      set({
+        previewing: null,
+        textPreviewContent: '',
+        textPreviewError: null,
+        textPreviewLoading: false,
+      });
+    }
+
+    set({ selectedPaths: new Set() });
+
+    const failures = results.filter((r) => r.status === 'rejected');
+
+    if (failures.length > 0) {
+      set({
+        error: `Failed to trash ${failures.length} of ${paths.length} items.`,
+      });
+    }
+
+    await refreshFiles(currentPath, { preserveScroll: true });
+  },
+  batchMove: async (paths, destinationPath) => {
+    const { currentPath, refreshFiles, session } = get();
+    const csrfToken = requireCsrfToken(session?.csrfToken);
+
+    const results = await Promise.allSettled(
+      paths.map((p) => moveFile(p, destinationPath, csrfToken))
+    );
+
+    set({ selectedPaths: new Set() });
+
+    const failures = results.filter((r) => r.status === 'rejected');
+
+    if (failures.length > 0) {
+      set({
+        error: `Failed to move ${failures.length} of ${paths.length} items.`,
+      });
+    }
+
+    await refreshFiles(currentPath, { preserveScroll: true });
   },
 });

@@ -8,7 +8,7 @@
   --color-ink-subtle: rgba(17, 32, 51, 0.72);
   --color-line: rgba(17, 32, 51, 0.12);
   --color-surface-card: rgba(255, 252, 247, 0.78);
-  --color-surface-panel: rgba(247, 242, 236, 0.82);
+  --color-surface-panel: rgba(247, 242, 236, 1);
   --color-surface-panel-strong: rgba(255, 255, 255, 0.48);
   --color-surface-sidebar: rgba(17, 32, 51, 0.92);
   --color-surface-sidebar-soft: rgba(255, 255, 255, 0.08);

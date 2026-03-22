@@ -1,6 +1,7 @@
 import {
   selectCurrentPath,
   selectListing,
+  selectSelectedPaths,
   selectSetSortField,
   selectSortDirection,
   selectSortField,
@@ -9,6 +10,7 @@ import {
 import { useAppStore } from '../../../app/store/useAppStore';
 import { Button } from '../../../shared/ui/Button';
 import { sortItems } from '../lib/sort';
+import { BatchToolbar } from './BatchToolbar';
 import { BreadcrumbNav } from './BreadcrumbNav';
 import { ExplorerToolbar } from './ExplorerToolbar';
 import { FileList } from './FileList';
@@ -16,6 +18,7 @@ import { FileList } from './FileList';
 export function FileExplorerView() {
   const currentPath = useAppStore(selectCurrentPath);
   const listing = useAppStore(selectListing);
+  const selectedPaths = useAppStore(selectSelectedPaths);
   const sortField = useAppStore(selectSortField);
   const sortDirection = useAppStore(selectSortDirection);
   const setSortField = useAppStore(selectSetSortField);
@@ -35,6 +38,7 @@ export function FileExplorerView() {
         </div>
         <ExplorerToolbar />
       </header>
+      {selectedPaths.size > 0 ? <BatchToolbar items={items} /> : null}
       <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:justify-between">
         <BreadcrumbNav pathValue={listing?.path ?? currentPath} />
         <div className="flex flex-wrap items-center gap-2">

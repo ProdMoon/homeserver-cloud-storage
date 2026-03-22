@@ -4,22 +4,27 @@ import { cn } from '../../../shared/lib/cn';
 import { formatBytes, formatDate, previewLabel } from '../../../shared/lib/formatters';
 import type { FileItem } from '../../../shared/types';
 import { Button, LinkButton } from '../../../shared/ui/Button';
+import { Checkbox } from '../../../shared/ui/Checkbox';
 import {
   selectDeleteItem,
   selectMoveItem,
   selectOpenPreview,
   selectRenameItem,
   selectSelectedPath,
+  selectSelectedPaths,
   selectSetCurrentPath,
   selectSetSelectedPath,
+  selectToggleSelectedPath,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
 import { explorerListColumns } from './layout';
 
 export function FileRow({ item }: { item: FileItem }) {
   const selectedPath = useAppStore(selectSelectedPath);
+  const selectedPaths = useAppStore(selectSelectedPaths);
   const setCurrentPath = useAppStore(selectSetCurrentPath);
   const setSelectedPath = useAppStore(selectSetSelectedPath);
+  const toggleSelectedPath = useAppStore(selectToggleSelectedPath);
   const openPreview = useAppStore(selectOpenPreview);
   const renameItem = useAppStore(selectRenameItem);
   const moveItem = useAppStore(selectMoveItem);
@@ -72,16 +77,22 @@ export function FileRow({ item }: { item: FileItem }) {
   return (
     <div
       className={cn(
-        'grid grid-cols-1 gap-2.5 border-t border-line px-4.5 py-3.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/40 xl:items-center xl:gap-4',
+        'grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2.5 border-t border-line px-4.5 py-3.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/40 xl:items-center xl:gap-4',
         explorerListColumns,
-        selectedPath === item.path && 'bg-accent-wash'
+        (selectedPath === item.path || selectedPaths.has(item.path)) && 'bg-accent-wash'
       )}
+      data-path={item.path}
       onClick={() => setSelectedPath(item.path)}
       onDoubleClick={activateItem}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
+      <Checkbox
+        aria-label={`Select ${item.name}`}
+        checked={selectedPaths.has(item.path)}
+        onChange={() => toggleSelectedPath(item.path)}
+      />
       <div className="flex min-w-0 items-center gap-3.5">
         <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-[18px] bg-[linear-gradient(135deg,rgba(219,109,48,0.24),rgba(19,35,55,0.14))] font-mono text-xs">
           {item.thumbnailAvailable ? (
