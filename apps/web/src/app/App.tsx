@@ -110,8 +110,8 @@ export function App() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col gap-6 p-6 xl:grid xl:grid-cols-[320px_minmax(0,1fr)]">
-      <aside className="flex flex-col gap-5 rounded-[22px] bg-surface-sidebar px-3 py-2 text-sidebar-text shadow-cloud backdrop-blur-xl sm:rounded-[28px] xl:justify-between xl:p-6">
+    <main className="flex min-h-screen flex-col gap-2 p-2 xl:grid xl:grid-cols-[320px_minmax(0,1fr)] xl:gap-6 xl:p-6">
+      <aside className="flex flex-col gap-5 rounded-2xl bg-surface-sidebar px-3 py-2 text-sidebar-text shadow-cloud backdrop-blur-xl xl:justify-between xl:rounded-3xl xl:p-6">
         <div className="flex flex-col gap-4">
           <div className="hidden xl:block">
             <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
@@ -142,7 +142,7 @@ export function App() {
         </div>
         {uploads.length > 0 ? <UploadQueue /> : null}
       </aside>
-      <section className="flex flex-col gap-4 rounded-[22px] bg-surface-card p-6 shadow-cloud backdrop-blur-xl sm:rounded-[28px]">
+      <section className="flex flex-col gap-4 rounded-2xl bg-surface-card p-4 shadow-cloud backdrop-blur-xl sm:rounded-3xl">
         {error ? <ErrorBanner message={error} /> : null}
         {activeView === 'files' ? <FileExplorerView /> : <TrashView />}
       </section>
