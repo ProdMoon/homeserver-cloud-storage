@@ -3,7 +3,7 @@ import { previewUrl, downloadUrl } from '../../../shared/api/files';
 import { cn } from '../../../shared/lib/cn';
 import { formatBytes, formatDate, previewLabel } from '../../../shared/lib/formatters';
 import type { FileItem } from '../../../shared/types';
-import { Download, Eye, FolderInput, FolderOpen, Pencil, Trash2 } from 'lucide-react';
+import { Download, FolderInput, Pencil, Trash2 } from 'lucide-react';
 import { Button, LinkButton } from '../../../shared/ui/Button';
 import { Checkbox } from '../../../shared/ui/Checkbox';
 import {
@@ -11,19 +11,15 @@ import {
   selectMoveItem,
   selectOpenPreview,
   selectRenameItem,
-  selectSelectedPath,
   selectSelectedPaths,
   selectSetCurrentPath,
-  selectSetSelectedPath,
   selectToggleSelectedPath,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
 
 export function FileRow({ item }: { item: FileItem }) {
-  const selectedPath = useAppStore(selectSelectedPath);
   const selectedPaths = useAppStore(selectSelectedPaths);
   const setCurrentPath = useAppStore(selectSetCurrentPath);
-  const setSelectedPath = useAppStore(selectSetSelectedPath);
   const toggleSelectedPath = useAppStore(selectToggleSelectedPath);
   const openPreview = useAppStore(selectOpenPreview);
   const renameItem = useAppStore(selectRenameItem);
@@ -77,12 +73,11 @@ export function FileRow({ item }: { item: FileItem }) {
   return (
     <div
       className={cn(
-        'grid grid-cols-1 gap-2.5 border-t border-line px-4.5 py-3.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-inset xl:items-center xl:gap-4',
-        (selectedPath === item.path || selectedPaths.has(item.path)) && 'bg-accent-wash'
+        'grid cursor-pointer grid-cols-1 gap-2.5 border-t border-line px-4.5 py-3.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-inset xl:items-center xl:gap-4',
+        selectedPaths.has(item.path) ? 'bg-accent-wash hover:bg-accent/12' : 'hover:bg-black/3'
       )}
       data-path={item.path}
-      onClick={() => setSelectedPath(item.path)}
-      onDoubleClick={activateItem}
+      onClick={activateItem}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
@@ -114,20 +109,6 @@ export function FileRow({ item }: { item: FileItem }) {
         </div>
       </div>
       <div className="flex min-w-0 flex-wrap items-center gap-1.5 xl:flex-nowrap xl:justify-end">
-        {item.type === 'directory' ? (
-          <Button
-            aria-label="Open"
-            onClick={() => setCurrentPath(item.path)}
-            size="sm"
-            type="button"
-          >
-            <FolderOpen className="size-4" />
-          </Button>
-        ) : (
-          <Button aria-label="Preview" onClick={() => openPreview(item)} size="sm" type="button">
-            <Eye className="size-4" />
-          </Button>
-        )}
         {item.type === 'file' ? (
           <LinkButton aria-label="Download" href={downloadUrl(item.path)} size="sm">
             <Download className="size-4" />
