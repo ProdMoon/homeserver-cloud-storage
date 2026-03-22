@@ -1,3 +1,5 @@
+import { X } from 'lucide-react';
+import { useEscapeStack } from '../../../shared/hooks/useEscapeStack';
 import { previewUrl } from '../../../shared/api/files';
 import { previewLabel } from '../../../shared/lib/formatters';
 import { Button } from '../../../shared/ui/Button';
@@ -19,29 +21,35 @@ export function PreviewModal() {
   const textPreviewError = useAppStore(selectTextPreviewError);
   const textPreviewLoading = useAppStore(selectTextPreviewLoading);
 
+  useEscapeStack(() => closePreview(), !!file);
+
   if (!file) {
     return null;
   }
 
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center bg-overlay p-6"
+      className="fixed inset-0 z-50 grid place-items-center bg-overlay p-2 xl:p-6"
       role="dialog"
       aria-modal="true"
     >
       <div className="max-h-[calc(100vh-48px)] w-full max-w-6xl overflow-hidden rounded-[22px] bg-preview-surface shadow-cloud backdrop-blur-xl sm:rounded-[28px]">
-        <div className="flex flex-col gap-3 border-b border-line px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
-              {previewLabel(file.previewKind)}
-            </div>
-            <h2 className="mt-3 text-[clamp(2rem,4vw,2.2rem)] leading-[1.05] tracking-[-0.04em]">
-              {file.name}
-            </h2>
-          </div>
-          <Button onClick={() => closePreview()} type="button">
-            Close
+        <div className="relative border-b border-line px-6 py-5">
+          <Button
+            aria-label="Close"
+            className="absolute top-4 right-4 size-10 rounded-full"
+            onClick={() => closePreview()}
+            size="sm"
+            type="button"
+          >
+            <X className="size-4" />
           </Button>
+          <div className="font-mono text-[0.72rem] tracking-[0.16em] text-accent uppercase">
+            {previewLabel(file.previewKind)}
+          </div>
+          <h2 className="mt-3 text-[clamp(2rem,4vw,2.2rem)] leading-[1.05] tracking-[-0.04em]">
+            {file.name}
+          </h2>
         </div>
         <div className="max-h-[calc(100vh-220px)] overflow-auto p-6">
           {file.previewKind === 'image' ? (

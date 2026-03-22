@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEscapeStack } from '../../../shared/hooks/useEscapeStack';
 import { listFiles } from '../../../shared/api/files';
 import type { DirectoryListing } from '../../../shared/types';
 import { Button } from '../../../shared/ui/Button';
@@ -46,9 +47,12 @@ export function FolderPickerDialog({ initialPath, onClose, onSelect }: FolderPic
 
   const folders = listing?.items.filter((item) => item.type === 'directory') ?? [];
 
+  useEscapeStack(() => onClose(), true);
+
   return (
     <dialog
       className="fixed inset-0 m-auto h-fit w-full max-w-md rounded-3xl border border-line bg-surface-panel p-0 shadow-xl backdrop:bg-black/40"
+      onCancel={(e) => e.preventDefault()}
       onClose={onClose}
       ref={dialogRef}
     >

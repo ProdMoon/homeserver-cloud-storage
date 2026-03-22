@@ -4,8 +4,10 @@ import {
   selectFilesLoading,
   selectListing,
   selectSelectAll,
+  selectSelectedPaths,
 } from '../../../app/store/selectors';
 import { useAppStore } from '../../../app/store/useAppStore';
+import { useEscapeStack } from '../../../shared/hooks/useEscapeStack';
 import type { FileItem } from '../../../shared/types';
 import { EmptyState } from '../../../shared/ui/EmptyState';
 import { FileListHeader } from './FileListHeader';
@@ -17,23 +19,20 @@ export function FileList({ items }: { items: FileItem[] }) {
   const listing = useAppStore(selectListing);
   const selectAll = useAppStore(selectSelectAll);
   const clearSelection = useAppStore(selectClearSelection);
+  const selectedPaths = useAppStore(selectSelectedPaths);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useDragSelect(containerRef);
+  useEscapeStack(() => clearSelection(), selectedPaths.size > 0);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === 'Escape') {
-        clearSelection();
-        return;
-      }
-
       if ((event.metaKey || event.ctrlKey) && event.key === 'a') {
         event.preventDefault();
         selectAll();
       }
     },
-    [clearSelection, selectAll]
+    [selectAll]
   );
 
   return (

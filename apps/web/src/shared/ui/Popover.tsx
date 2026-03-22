@@ -1,5 +1,6 @@
 import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useEscapeStack } from '../hooks/useEscapeStack';
 
 interface PopoverProps {
   trigger: ReactNode;
@@ -28,6 +29,8 @@ export function Popover({ trigger, children }: PopoverProps) {
     });
   }, []);
 
+  useEscapeStack(() => setOpen(false), open);
+
   useLayoutEffect(() => {
     if (open) {
       updatePosition();
@@ -49,22 +52,14 @@ export function Popover({ trigger, children }: PopoverProps) {
       setOpen(false);
     }
 
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setOpen(false);
-      }
-    }
-
     window.addEventListener('scroll', updatePosition, true);
     window.addEventListener('resize', updatePosition);
     document.addEventListener('pointerdown', handleClickOutside);
-    document.addEventListener('keydown', handleEscape);
 
     return () => {
       window.removeEventListener('scroll', updatePosition, true);
       window.removeEventListener('resize', updatePosition);
       document.removeEventListener('pointerdown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
     };
   }, [open, updatePosition]);
 
