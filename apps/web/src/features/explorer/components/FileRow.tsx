@@ -105,12 +105,12 @@ export function FileRow({ item }: { item: FileItem }) {
           )}
         </div>
         <div className="min-w-0">
-          <strong className="mb-0.5 block truncate">{item.name}</strong>
-          <div className="flex items-center gap-2.5 text-sm text-ink-muted">
-            <div>{item.type === 'directory' ? 'Folder' : (item.mimeType ?? 'Binary file')}</div>
-            {item.type !== 'directory' && <div>{formatBytes(item.size)}</div>}
-            <div>{formatDate(item.modifiedAt)}</div>
+          <strong className="block truncate text-sm xl:text-base">{item.name}</strong>
+          <div className="flex items-center gap-2 text-xs text-ink-muted">
+            <span>{item.type === 'directory' ? 'Folder' : (item.mimeType ?? 'Binary file')}</span>
+            {item.type !== 'directory' && <span>{formatBytes(item.size)}</span>}
           </div>
+          <div className="text-xs text-ink-muted">{formatDate(item.modifiedAt)}</div>
         </div>
       </div>
       <div className="flex min-w-0 flex-wrap items-center gap-1.5 xl:flex-nowrap xl:justify-end">
